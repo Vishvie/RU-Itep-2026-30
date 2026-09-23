@@ -144,8 +144,9 @@
     transition: all 0.2s;
     position: relative;
     color: var(--text-primary);
+    -webkit-tap-highlight-color: transparent;
 }
-.calendar-day:hover:not(.empty) {
+.calendar-day:hover:not(.empty):not(.today) {
     background: var(--bg-secondary);
 }
 .calendar-day.empty {

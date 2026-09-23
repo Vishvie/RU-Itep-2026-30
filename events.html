@@ -152,11 +152,14 @@
                         </div>
                         <div class="form-group">
                             <label for="event-desc">Event Description</label>
-                            <textarea id="event-desc" required rows="3"></textarea>
+                            <textarea id="event-desc" rows="3" placeholder="What's happening.?"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="event-image">Cover Image URL</label>
                             <input type="url" id="event-image" required>
+                            <div id="event-image-preview-container" style="margin-top: 1rem; display: none; text-align: center; border-radius: 8px; overflow: hidden; background: var(--bg-secondary); border: 1px solid var(--border-color);">
+                                <img id="event-image-preview" src="" alt="Preview" style="max-width: 100%; max-height: 200px; display: block; margin: 0 auto; object-fit: cover;">
+                            </div>
                         </div>
                         <!-- Removed Album Folder Link -->
                     </form>
@@ -173,34 +176,38 @@
     <div id="event-details-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-primary); z-index: 9999; overflow-y: auto; overflow-x: hidden;">
         <div style="max-width: 800px; margin: 0 auto; min-height: 100vh; background: var(--bg-primary); padding-bottom: 4rem;">
             
-            <!-- Sticky Header -->
-            <div style="position: sticky; top: 0; z-index: 10; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 1rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 1rem;">
-                <button id="close-details-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-primary); display: flex; align-items: center; padding: 0.5rem; margin: -0.5rem;"><ion-icon name="arrow-back-outline"></ion-icon></button>
-                <h3 id="details-modal-title" style="margin: 0; font-size: 1.1rem; font-family: 'Poppins', sans-serif; font-weight: 500;">Event Details</h3>
-            </div>
-            
             <!-- Body Content -->
             <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                 
                 <!-- Event Cover Image (Full width on mobile) -->
                 <div style="position: relative; width: 100%;">
+                    <div style="position: absolute; top: 1rem; right: 1rem; z-index: 10; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <button id="close-details-modal" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='rgba(0,0,0,0.5)'" onmouseout="this.style.background='rgba(0,0,0,0.3)'" title="Close">
+                            <ion-icon name="close-outline"></ion-icon>
+                        </button>
+
+                        <button id="details-edit-btn" style="display: none; width: 40px; height: 40px; border-radius: 50%; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0; align-items: center; justify-content: center; font-size: 1.3rem; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='rgba(0,0,0,0.5)'" onmouseout="this.style.background='rgba(0,0,0,0.3)'" title="Edit Event">
+                            <ion-icon name="create-outline"></ion-icon>
+                        </button>
+                        
+                        <button id="details-share-btn" style="width: 40px; height: 40px; border-radius: 50%; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='rgba(0,0,0,0.5)'" onmouseout="this.style.background='rgba(0,0,0,0.3)'" title="Share Event">
+                            <ion-icon name="share-social-outline"></ion-icon>
+                        </button>
+
+                        <button id="details-delete-btn" style="display: none; width: 40px; height: 40px; border-radius: 50%; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0; align-items: center; justify-content: center; font-size: 1.4rem; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='rgba(0,0,0,0.5)'" onmouseout="this.style.background='rgba(0,0,0,0.3)'" title="Delete Event">
+                            <ion-icon name="trash-outline"></ion-icon>
+                        </button>
+                    </div>
                     <img id="details-modal-cover" src="" alt="Cover" style="width: 100%; height: 35vh; min-height: 250px; max-height: 400px; object-fit: cover;">
                     <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); padding: 3rem 1.5rem 1.5rem;">
+                        <p id="details-modal-date" style="color: rgba(255,255,255,0.9); font-weight: 600; margin: 0 0 0.5rem 0; font-size: 0.95rem; letter-spacing: 0.03em;"></p>
                         <h2 id="details-modal-heading" style="margin: 0; font-family: 'Poppins', sans-serif; font-size: 1.8rem; color: white; line-height: 1.2;"></h2>
-                        <p id="details-modal-date" style="color: rgba(255,255,255,0.8); font-weight: 500; margin-top: 0.5rem; font-size: 0.95rem;"></p>
                     </div>
                 </div>
 
                 <!-- Event Description & Actions -->
                 <div style="padding: 0 1.5rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
                     <p id="details-modal-desc" style="margin: 0; font-size: 1rem; line-height: 1.6; color: var(--text-secondary); flex: 1; min-width: 250px;"></p>
-                    
-                    <div id="details-action-buttons" style="display: flex; gap: 0.75rem;">
-
-                        <button id="details-delete-btn" style="display: none; background: rgba(255, 50, 50, 0.1); border: 1px solid rgba(255, 50, 50, 0.2); color: red; border-radius: 50%; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; cursor: pointer; font-size: 1.25rem; transition: transform 0.2s, background 0.2s;" title="Delete Event" onmouseover="this.style.transform='scale(1.1)'; this.style.background='rgba(255, 50, 50, 0.15)';" onmouseout="this.style.transform='scale(1)'; this.style.background='rgba(255, 50, 50, 0.1)';">
-                            <ion-icon name="trash-outline"></ion-icon>
-                        </button>
-                    </div>
                 </div>
 
                 <!-- Admin Upload Section -->
@@ -209,8 +216,10 @@
                         <h4 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.1rem;">Add Media</h4>
                         <form id="add-media-form" style="display: flex; flex-direction: column; gap: 1rem;">
                             <div class="form-group" style="margin-bottom: 0;">
-                                <label for="media-url" style="font-size: 0.9rem;">Image/Video URL (Google Drive or direct link)</label>
-                                <input type="url" id="media-url" required style="width: 100%; box-sizing: border-box;">
+                                <input type="url" id="media-url" placeholder="Add URL" required style="width: 100%; box-sizing: border-box;">
+                                <div id="media-url-preview-container" style="margin-top: 1rem; display: none; text-align: center; border-radius: 8px; overflow: hidden; background: rgba(0,0,0,0.05); border: 1px solid var(--border-color);">
+                                    <img id="media-url-preview" src="" alt="Preview" style="max-width: 100%; max-height: 150px; display: block; margin: 0 auto; object-fit: cover;">
+                                </div>
                             </div>
                             <button type="submit" class="btn-primary" id="add-media-btn" style="width: 100%; justify-content: center; padding: 0.8rem;">Add Media</button>
                         </form>
@@ -265,9 +274,26 @@
             modal.classList.remove('active');
         });
 
-        window.openAddEventModal = () => {
-            modal.classList.add('active');
+        let editingEventId = null;
+        window.openAddEventModal = (editId = null) => {
+            editingEventId = typeof editId === 'string' ? editId : null;
             document.getElementById('event-msg').style.display = 'none';
+            if (editingEventId) {
+                const eventData = allEventsList.find(e => e.id === editingEventId);
+                if (eventData) {
+                    document.getElementById('event-title').value = eventData.title || '';
+                    document.getElementById('event-date').value = eventData.date || '';
+                    document.getElementById('event-desc').value = eventData.description || '';
+                    document.getElementById('event-image').value = eventData.image || '';
+                    document.getElementById('event-image').dispatchEvent(new Event('input'));
+                    document.querySelector('#add-event-modal h3').textContent = 'Edit Event';
+                }
+            } else {
+                eventForm.reset();
+                document.getElementById('event-image-preview-container').style.display = 'none';
+                document.querySelector('#add-event-modal h3').textContent = 'Add New Event';
+            }
+            modal.classList.add('active');
         };
 
         // Form Submit
@@ -286,6 +312,21 @@
             return url;
         }
 
+        // Image Preview Logic
+        const eventImageInput = document.getElementById('event-image');
+        const previewContainer = document.getElementById('event-image-preview-container');
+        const previewImg = document.getElementById('event-image-preview');
+
+        eventImageInput.addEventListener('input', (e) => {
+            const url = e.target.value.trim();
+            if (url) {
+                previewImg.src = formatImageUrl(url);
+                previewContainer.style.display = 'block';
+            } else {
+                previewContainer.style.display = 'none';
+            }
+        });
+
         eventForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             eventBtn.disabled = true;
@@ -295,16 +336,24 @@
             try {
                 let imageUrl = formatImageUrl(document.getElementById('event-image').value);
                 
-                await addDoc(collection(db, "events"), {
+                const eventData = {
                     title: document.getElementById('event-title').value,
                     date: document.getElementById('event-date').value,
                     description: document.getElementById('event-desc').value,
-                    image: imageUrl,
-                    createdAt: new Date().toISOString()
-                });
-                eventMsg.textContent = 'Event added successfully!';
+                    image: imageUrl
+                };
+
+                if (editingEventId) {
+                    await updateDoc(doc(db, "events", editingEventId), eventData);
+                    eventMsg.textContent = 'Event updated successfully!';
+                } else {
+                    eventData.createdAt = new Date().toISOString();
+                    await addDoc(collection(db, "events"), eventData);
+                    eventMsg.textContent = 'Event added successfully!';
+                }
                 eventMsg.style.display = 'block';
                 eventForm.reset();
+                previewContainer.style.display = 'none';
                 setTimeout(() => modal.classList.remove('active'), 1000);
                 fetchEvents();
             } catch (error) {
@@ -317,14 +366,17 @@
 
         // Delete Logic
         window.deleteEvent = async (id) => {
-            if(confirm("Are you sure you want to delete this event?")) {
+            if(await window.customConfirm("Are you sure you want to delete this event?")) {
                 try {
                     await deleteDoc(doc(db, "events", id));
                     fetchEvents();
+                    return true;
                 } catch(e) {
                     alert("Error deleting: " + e.message);
+                    return false;
                 }
             }
+            return false;
         };
 
         window.shareEvent = (title, date) => {
@@ -364,19 +416,38 @@
             document.getElementById('details-modal-date').textContent = new Date(eventData.date).toLocaleDateString('default', { month: 'short', day: 'numeric' });
             document.getElementById('details-modal-desc').textContent = eventData.description || '';
             
+            // Set Share Action
+            const shareBtn = document.getElementById('details-share-btn');
+            shareBtn.onclick = () => {
+                shareEvent(eventData.title, eventData.date);
+            };
+
             // Admin options
+            const editBtn = document.getElementById('details-edit-btn');
             const deleteBtn = document.getElementById('details-delete-btn');
+            
             if (window.isAdmin) {
                 document.getElementById('details-admin-section').style.display = 'block';
                 document.getElementById('media-msg').style.display = 'none';
-                deleteBtn.style.display = 'flex';
-                deleteBtn.onclick = () => {
-                    deleteEvent(eventData.id);
+                
+                editBtn.style.display = 'flex';
+                editBtn.onclick = () => {
                     detailsModal.style.display = 'none';
                     document.body.style.overflow = '';
+                    openAddEventModal(eventData.id);
+                };
+
+                deleteBtn.style.display = 'flex';
+                deleteBtn.onclick = async () => {
+                    const deleted = await deleteEvent(eventData.id);
+                    if (deleted) {
+                        detailsModal.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
                 };
             } else {
                 document.getElementById('details-admin-section').style.display = 'none';
+                editBtn.style.display = 'none';
                 deleteBtn.style.display = 'none';
             }
             
@@ -487,6 +558,20 @@
             }
         });
 
+        const mediaUrlInput = document.getElementById('media-url');
+        const mediaPreviewContainer = document.getElementById('media-url-preview-container');
+        const mediaPreviewImg = document.getElementById('media-url-preview');
+
+        mediaUrlInput.addEventListener('input', (e) => {
+            const url = e.target.value.trim();
+            if (url) {
+                mediaPreviewImg.src = formatImageUrl(url);
+                mediaPreviewContainer.style.display = 'block';
+            } else {
+                mediaPreviewContainer.style.display = 'none';
+            }
+        });
+
         document.getElementById('add-media-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentEventId) return;
@@ -519,6 +604,7 @@
                 }
                 
                 urlInput.value = '';
+                mediaPreviewContainer.style.display = 'none';
                 msg.textContent = 'Media added successfully!';
                 msg.style.color = '#28a745';
                 msg.style.display = 'block';
