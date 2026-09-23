@@ -48,7 +48,7 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" required placeholder="">
                 </div>
-                <button type="submit" class="btn-primary" id="login-btn">Secure Login</button>
+                <button type="submit" class="btn-primary" id="login-btn">Verify</button>
             </form>
         </div>
     </section>
@@ -85,7 +85,7 @@
             } catch (error) {
                 errorDiv.textContent = 'Invalid credentials. Please try again.';
                 errorDiv.style.display = 'block';
-                loginBtn.textContent = 'Secure Login';
+                loginBtn.textContent = 'Verify';
                 loginBtn.disabled = false;
             }
         });
