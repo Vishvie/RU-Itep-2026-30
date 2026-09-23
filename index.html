@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ravenshaw University</title>
+    <meta name="description" content="Welcome to the Ravenshaw University Integrated B.Ed Batch 2026-2030 Community Portal. Discover batchmates, teachers, events, and talents.">
+    <meta property="og:title" content="Ravenshaw University | Batch Community">
+    <meta property="og:description" content="Welcome to the Ravenshaw University Integrated B.Ed Batch 2026-2030 Community Portal.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FFFFFF">
+
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/navbar.css">
+    <link rel="stylesheet" href="assets/css/home.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js">
+    <link rel="modulepreload" href="assets/js/firebase-init.js">
+</head>
+
+<body style="--nav-active-color: #5BE2FF;">
+
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/Ravenshaw_University_Logo.png" alt="Ravenshaw University" class="navbar-logo-img">
+                <span class="navbar-title">I.B.Ed 2026-2030</span>
+            </a>
+
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <ul class="navbar-menu" id="navbar-menu">
+                <li><a href="index.html" class="navbar-link active">Home</a></li>
+                <li><a href="batchmates.html" class="navbar-link">Batchmates</a></li>
+                <li><a href="teachers.html" class="navbar-link">Teachers</a></li>
+                <li><a href="events.html" class="navbar-link">Events</a></li>
+                <li><a href="calendar.html" class="navbar-link">Calendar</a></li>
+                <li><a href="talents.html" class="navbar-link">Talents</a></li>
+                <li><a href="contact.html" class="navbar-link-btn">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero" id="hero">
+        <img src="assets/images/ravenshaw_campus.jpg" alt="Ravenshaw University Campus" class="hero-bg-img">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content text-center">
+            <h1 class="hero-title glass-text reveal-up" id="hero-title">Shaping the future.</h1>
+            <p class="hero-subtitle reveal-up" id="hero-subtitle" style="transition-delay: 0.1s">Welcome to the digital home of the Integrated B.Ed Batch (2026-2030).</p>
+        </div>
+    </header>
+
+    <section class="features-section section">
+        <div class="container">
+            <div class="features-grid">
+                
+                <!-- Students Card -->
+                <a href="batchmates.html" class="feature-card">
+                    <div class="feature-icon icon-blue">
+                        <ion-icon name="people"></ion-icon>
+                    </div>
+                    <h3 class="feature-title">Our Batchmates</h3>
+                    <p class="feature-desc">Meet the vibrant minds of our batch preparing to shape the world of education.</p>
+                    <div class="feature-link link-blue">Explore <ion-icon name="arrow-forward"></ion-icon></div>
+                </a>
+
+                <!-- Teachers Card -->
+                <a href="teachers.html" class="feature-card">
+                    <div class="feature-icon icon-indigo">
+                        <ion-icon name="school"></ion-icon>
+                    </div>
+                    <h3 class="feature-title">Our Teachers</h3>
+                    <p class="feature-desc">Meet the esteemed faculty members who guide and inspire our educational journey.</p>
+                    <div class="feature-link link-indigo">Learn more <ion-icon name="arrow-forward"></ion-icon></div>
+                </a>
+
+                <!-- Events Card -->
+                <a href="events.html" class="feature-card">
+                    <div class="feature-icon icon-purple">
+                        <ion-icon name="calendar"></ion-icon>
+                    </div>
+                    <h3 class="feature-title">Our Events</h3>
+                    <p class="feature-desc">Keep track of our latest reunions, seminars, and collaborative gatherings.</p>
+                    <div class="feature-link link-purple">Explore <ion-icon name="arrow-forward"></ion-icon></div>
+                </a>
+
+                <!-- Talents Card -->
+                <a href="talents.html" class="feature-card">
+                    <div class="feature-icon icon-pink">
+                        <ion-icon name="color-wand"></ion-icon>
+                    </div>
+                    <h3 class="feature-title">Our Talents</h3>
+                    <p class="feature-desc">Discover students with diverse skills and talents from arts to technology.</p>
+                    <div class="feature-link link-pink">Explore <ion-icon name="arrow-forward"></ion-icon></div>
+                </a>
+
+                <!-- Connect Card -->
+                <a href="contact.html" class="feature-card">
+                    <div class="feature-icon icon-green">
+                        <ion-icon name="mail"></ion-icon>
+                    </div>
+                    <h3 class="feature-title">Contact Us</h3>
+                    <p class="feature-desc">Have inquiries or want to collaborate? Reach out to our batch representatives.</p>
+                    <div class="feature-link link-green">Contact <ion-icon name="arrow-forward"></ion-icon></div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div style="line-height: 1.4; display: flex; flex-direction: column; gap: 0.3rem;"><p style="margin: 0;">INTEGRATED B.ED BATCH 2026-2030</p><p style="margin: 0; font-size: 0.85em; opacity: 0.8;">RAVENSHAW UNIVERSITY</p></div>
+                <div id="admin-auth-container" style="margin-top: 5px;">
+                    <a href="login.html" id="admin-login-link" style="color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: none; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Admin Login</a>
+                    <button id="admin-logout-btn" style="display: none; background: none; border: none; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: underline; opacity: 0.7; transition: opacity 0.3s; cursor: pointer; padding: 0;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Admin Logout</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .scale-in, .reveal-up');
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script type="module" src="assets/js/navbar.js"></script>
+    <script type="module" src="assets/js/auth.js"></script>
+</body>
+</html>

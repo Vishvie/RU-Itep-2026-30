@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachers | Ravenshaw University ITEP</title>
+    <meta name="description" content="Meet the faculty and teachers of the Ravenshaw University Integrated B.Ed program.">
+    <meta property="og:title" content="Teachers | Ravenshaw University ITEP">
+    <meta property="og:description" content="Meet the faculty and teachers of the Ravenshaw University Integrated B.Ed program.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FFFFFF">
+
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/navbar.css">
+    <link rel="stylesheet" href="assets/css/profiles.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js">
+    <link rel="modulepreload" href="assets/js/firebase-init.js">
+    <link rel="modulepreload" href="assets/js/firebase-init.js">
+</head>
+
+<body style="--nav-active-color: #FF6B8A;">
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/Ravenshaw_University_Logo.png" alt="Ravenshaw University" class="navbar-logo-img">
+                <span class="navbar-title">I.B.Ed 2026-2030</span>
+            </a>
+
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <ul class="navbar-menu" id="navbar-menu">
+                <li><a href="index.html" class="navbar-link">Home</a></li>
+                <li><a href="batchmates.html" class="navbar-link">Batchmates</a></li>
+                <li><a href="teachers.html" class="navbar-link active">Teachers</a></li>
+                <li><a href="events.html" class="navbar-link">Events</a></li>
+                <li><a href="calendar.html" class="navbar-link">Calendar</a></li>
+                <li><a href="talents.html" class="navbar-link">Talents</a></li>
+                <li><a href="contact.html" class="navbar-link-btn">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-header section">
+        <div class="container text-center">
+            <h1 class="page-title reveal">Our <span class="title-highlight">Teachers</span></h1>
+            <p class="page-subtitle reveal" style="transition-delay: 0.1s; max-width: 600px; margin: 1rem auto 0;">
+                Honoring the mentors who shaped our paths and fueled our ambitions with their wisdom.
+            </p>
+        </div>
+    </header>
+
+    <section class="profiles-section section" style="padding-top: 0;">
+        <div class="container">
+            <div class="profiles-grid" id="teachers-grid">
+                <!-- Add Card (Admin) - Hardcoded to prevent layout shift -->
+                <div class="add-card admin-only-card animate-in" onclick="openAddTeacherModal()" style="box-shadow: none;">
+                    <div class="add-card-content">
+                        <ion-icon name="add-circle" class="add-card-icon"></ion-icon>
+                        <span class="add-card-text">Add New Teacher</span>
+                        <span class="add-card-subtext">Click to create a new profile</span>
+                    </div>
+                </div>
+
+                <!-- Teacher Skeletons -->
+                <div class="profile-card" style="box-shadow: none; pointer-events: none;">
+                    <div class="profile-card-inner">
+                        <div class="profile-card-front" style="border: 1px solid var(--border-color);">
+                            <div class="profile-top-box skeleton" style="background: var(--bg-secondary); border: none;">
+                                <div class="profile-badge skeleton" style="color: transparent; width: 80px; border: none; box-shadow: none; background: rgba(255,255,255,0.5);">&nbsp;</div>
+                                <div class="profile-image-wrapper skeleton" style="border-radius: 8px; border: 4px solid var(--bg-secondary);"></div>
+                                <div class="profile-top-content">
+                                    <h3 class="profile-name skeleton" style="color: transparent; width: 60%; margin-bottom: 0.5rem; border-radius: 4px;">&nbsp;</h3>
+                                    <p class="profile-stream-text skeleton" style="color: transparent; width: 40%; border-radius: 4px;">&nbsp;</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-card" style="box-shadow: none; pointer-events: none;">
+                    <div class="profile-card-inner">
+                        <div class="profile-card-front" style="border: 1px solid var(--border-color);">
+                            <div class="profile-top-box skeleton" style="background: var(--bg-secondary); border: none;">
+                                <div class="profile-badge skeleton" style="color: transparent; width: 80px; border: none; box-shadow: none; background: rgba(255,255,255,0.5);">&nbsp;</div>
+                                <div class="profile-image-wrapper skeleton" style="border-radius: 8px; border: 4px solid var(--bg-secondary);"></div>
+                                <div class="profile-top-content">
+                                    <h3 class="profile-name skeleton" style="color: transparent; width: 60%; margin-bottom: 0.5rem; border-radius: 4px;">&nbsp;</h3>
+                                    <p class="profile-stream-text skeleton" style="color: transparent; width: 40%; border-radius: 4px;">&nbsp;</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-card" style="box-shadow: none; pointer-events: none;">
+                    <div class="profile-card-inner">
+                        <div class="profile-card-front" style="border: 1px solid var(--border-color);">
+                            <div class="profile-top-box skeleton" style="background: var(--bg-secondary); border: none;">
+                                <div class="profile-badge skeleton" style="color: transparent; width: 80px; border: none; box-shadow: none; background: rgba(255,255,255,0.5);">&nbsp;</div>
+                                <div class="profile-image-wrapper skeleton" style="border-radius: 8px; border: 4px solid var(--bg-secondary);"></div>
+                                <div class="profile-top-content">
+                                    <h3 class="profile-name skeleton" style="color: transparent; width: 60%; margin-bottom: 0.5rem; border-radius: 4px;">&nbsp;</h3>
+                                    <p class="profile-stream-text skeleton" style="color: transparent; width: 40%; border-radius: 4px;">&nbsp;</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="no-results" class="empty-state" style="display: none;">
+                <h3>No teachers found</h3>
+            </div>
+            
+            <div class="load-more-container" style="text-align: center; margin-top: 2rem;">
+                <button id="load-more-btn" class="btn btn-secondary" style="display: none; padding: 10px 20px; border-radius: 999px;">Load More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Teacher Modal -->
+    <div class="admin-modal-overlay" id="add-teacher-modal">
+        <div class="admin-modal">
+            <div class="admin-modal-header">
+                <h3 id="teacher-modal-title">Add New Teacher</h3>
+                <button class="btn-close" id="close-teacher-modal"><ion-icon name="close"></ion-icon></button>
+            </div>
+            <div class="admin-modal-body">
+                <div>
+                    <div id="teacher-msg" class="success-message"></div>
+                    <form id="teacher-form">
+                        <div class="form-group">
+                            <label for="teacher-name">Full Name</label>
+                            <input type="text" id="teacher-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher-desc">Short Description (Role/Subject)</label>
+                            <input type="text" id="teacher-desc" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher-dob">Date of Birth</label>
+                            <input type="date" id="teacher-dob" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher-image">Image URL (Google Drive link or any direct link)</label>
+                            <input type="url" id="teacher-image" required>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="admin-modal-footer">
+                <button type="submit" class="btn-primary" id="teacher-submit" form="teacher-form" style="width: 100%; max-width: 300px;">Save Teacher</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div style="line-height: 1.4; display: flex; flex-direction: column; gap: 0.3rem;"><p style="margin: 0;">INTEGRATED B.ED BATCH 2026-2030</p><p style="margin: 0; font-size: 0.85em; opacity: 0.8;">RAVENSHAW UNIVERSITY</p></div>
+                <div id="admin-auth-container" style="margin-top: 5px;">
+                    <a href="login.html" id="admin-login-link" style="color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: none; opacity: 0.7;">Admin Login</a>
+                    <button id="admin-logout-btn" style="display: none; background: none; border: none; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: underline; opacity: 0.7; cursor: pointer; padding: 0;">Admin Logout</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="assets/js/navbar.js"></script>
+    <script type="module" src="assets/js/auth.js"></script>
+    <script type="module">
+        import { db, auth, onAuthStateChanged, collection, getDocs, getDoc, orderBy, query, limit, startAfter, addDoc, doc, deleteDoc, updateDoc, escapeHTML } from './assets/js/firebase-init.js';
+
+        let editingTeacherId = null;
+        let allTeachers = [];
+        let isDataLoaded = false;
+        let lastVisibleTeacher = null;
+        const teachersPerPage = 12;
+
+        onAuthStateChanged(auth, (user) => {
+            window.isAdmin = !!user;
+            if (isDataLoaded) renderTeachers();
+        });
+
+        // Modal Logic
+        const modal = document.getElementById('add-teacher-modal');
+        document.getElementById('close-teacher-modal').addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        window.openAddTeacherModal = () => {
+            editingTeacherId = null;
+            document.getElementById('teacher-modal-title').textContent = 'Add New Teacher';
+            teacherBtn.textContent = 'Save Teacher';
+            document.getElementById('teacher-form').reset();
+
+            modal.classList.add('active');
+            document.getElementById('teacher-msg').style.display = 'none';
+        };
+
+        const iName = document.getElementById('teacher-name');
+        const iDesc = document.getElementById('teacher-desc');
+        const iImg = document.getElementById('teacher-image');
+
+        function formatImageUrl(url) {
+            if (url.includes('drive.google.com')) {
+                const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                }
+            }
+            return url;
+        }
+
+
+
+        // Form Submit
+        const teacherForm = document.getElementById('teacher-form');
+        const teacherBtn = document.getElementById('teacher-submit');
+        const teacherMsg = document.getElementById('teacher-msg');
+
+        teacherForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            teacherBtn.disabled = true;
+            teacherBtn.textContent = 'Saving...';
+            teacherMsg.style.display = 'none';
+
+            try {
+                let imageUrl = formatImageUrl(document.getElementById('teacher-image').value);
+                const dobVal = document.getElementById('teacher-dob').value;
+                let birthMonth = null;
+                if (dobVal) {
+                    birthMonth = parseInt(dobVal.split('-')[1], 10);
+                }
+                
+                const teacherData = {
+                    name: iName.value,
+                    description: iDesc.value,
+                    dob: dobVal,
+                    birthMonth: birthMonth,
+                    image: imageUrl
+                };
+
+                if (editingTeacherId) {
+                    await updateDoc(doc(db, "teachers", editingTeacherId), teacherData);
+                    teacherMsg.textContent = 'Teacher updated successfully!';
+                } else {
+                    teacherData.createdAt = new Date().toISOString();
+                    await addDoc(collection(db, "teachers"), teacherData);
+                    teacherMsg.textContent = 'Teacher added successfully!';
+                }
+                teacherMsg.style.display = 'block';
+                teacherForm.reset();
+                setTimeout(() => modal.classList.remove('active'), 1000);
+                fetchTeachers();
+            } catch (error) {
+                alert("Error saving teacher: " + error.message);
+            } finally {
+                teacherBtn.disabled = false;
+                teacherBtn.textContent = editingTeacherId ? 'Update Teacher' : 'Save Teacher';
+            }
+        });
+
+        // Edit Teacher Logic
+        window.editTeacher = async (id) => {
+            editingTeacherId = id;
+            document.getElementById('teacher-modal-title').textContent = 'Edit Teacher';
+            teacherBtn.textContent = 'Update Teacher';
+            
+            const docSnap = await getDoc(doc(db, "teachers", id));
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                document.getElementById('teacher-name').value = data.name || '';
+                document.getElementById('teacher-desc').value = data.description || '';
+                document.getElementById('teacher-dob').value = data.dob || '';
+                document.getElementById('teacher-image').value = data.image || '';
+                
+                // Trigger live preview
+                iName.dispatchEvent(new Event('input'));
+                iDesc.dispatchEvent(new Event('input'));
+                iImg.dispatchEvent(new Event('input'));
+                
+                modal.classList.add('active');
+                document.getElementById('teacher-msg').style.display = 'none';
+            }
+        };
+
+        window.deleteTeacher = async (id) => {
+            if(confirm("Are you sure you want to delete this teacher?")) {
+                try {
+                    await deleteDoc(doc(db, "teachers", id));
+                    fetchTeachers();
+                } catch(e) {
+                    alert("Error deleting: " + e.message);
+                }
+            }
+        };
+
+        window.shareProfile = (name, type, description) => {
+            const text = `Check out ${name}'s profile on Ravenshaw ITEP!`;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Ravenshaw Teacher',
+                    text: text,
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(text + " " + window.location.href);
+                alert("Profile info copied to clipboard!");
+            }
+        };
+
+        async function fetchTeachers(loadMore = false) {
+            const grid = document.getElementById('teachers-grid');
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            try {
+                let constraints = [orderBy("createdAt", "asc"), limit(teachersPerPage)];
+                if (loadMore && lastVisibleTeacher) {
+                    constraints.push(startAfter(lastVisibleTeacher));
+                }
+                
+                const q = query(collection(db, "teachers"), ...constraints);
+                const querySnapshot = await getDocs(q);
+                
+                if (!loadMore) allTeachers = [];
+                
+                querySnapshot.forEach((docSnap) => {
+                    allTeachers.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                
+                lastVisibleTeacher = querySnapshot.docs[querySnapshot.docs.length - 1];
+                
+                if (querySnapshot.docs.length < teachersPerPage) {
+                    loadMoreBtn.style.display = 'none';
+                } else {
+                    loadMoreBtn.style.display = 'inline-block';
+                }
+
+                isDataLoaded = true;
+                renderTeachers();
+            } catch (error) {
+                console.error("Error fetching teachers:", error);
+                if(!loadMore) grid.innerHTML = '<p>Error loading teachers.</p>';
+            }
+        }
+        
+        document.getElementById('load-more-btn').addEventListener('click', () => fetchTeachers(true));
+
+        function renderTeachers(teachers) {
+            teachers = teachers || allTeachers;
+            const grid = document.getElementById('teachers-grid');
+            grid.innerHTML = ''; 
+
+            if (window.isAdmin) {
+                grid.innerHTML += `
+                    <div class="add-card" onclick="openAddTeacherModal()">
+                        <div class="add-card-content">
+                            <ion-icon name="add-circle" class="add-card-icon"></ion-icon>
+                            <span class="add-card-text">Add New Teacher</span>
+                            <span class="add-card-subtext">Click to create a new profile</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (teachers.length === 0 && !window.isAdmin) {
+                document.getElementById('no-results').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('no-results').style.display = 'none';
+            }
+
+            teachers.forEach((data, index) => {
+                const card = document.createElement('div');
+                card.className = 'profile-card animate-in';
+                card.style.position = 'relative'; 
+                card.onclick = function() { this.classList.toggle('flipped'); };
+                
+                let deleteBtn = window.isAdmin ? `<button class="btn-delete-inline" onclick="deleteTeacher('${data.id}')"><ion-icon name="trash"></ion-icon></button>` : '';
+
+                // Set background color alternating or standard
+                let bgColor = '#FEE0DF';
+
+                card.innerHTML = `
+                    <div class="profile-card-inner">
+                        <div class="profile-card-front">
+                            <div class="profile-top-box" style="background: ${bgColor};">
+                                <div class="profile-badge">Teacher</div>
+                                <div class="profile-image-wrapper">
+                                    <img src="${escapeHTML(data.image)}" alt="Profile" class="profile-image" onerror="this.src='assets/images/placeholder.jpg'" loading="lazy">
+                                </div>
+                                <div class="profile-top-content">
+                                    <h3 class="profile-name">${escapeHTML(data.name)}</h3>
+                                    <p class="profile-stream-text">${escapeHTML(data.description || '')}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-card-back">
+                            
+                            ${window.isAdmin ? `
+                            <button onclick="event.stopPropagation(); editTeacher('${escapeHTML(data.id)}')" style="width: 70%; max-width: 160px; border-radius: 999px; background: #e0e7ff; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: flex-start; padding: 10px 10px 10px 24px; gap: 0.75rem; color: #4338ca; font-weight: 500; font-family: var(--font-body); border: none; cursor: pointer;">
+                                <ion-icon name="create-outline" style="font-size: 1.2rem;"></ion-icon> <span>Edit</span>
+                            </button>
+                            ` : ''}
+
+                            <button onclick="event.stopPropagation(); shareProfile('${escapeHTML(data.name)}', 'Teacher', '${escapeHTML(data.description)}')" style="width: 70%; max-width: 160px; border-radius: 999px; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: flex-start; padding: 10px 10px 10px 24px; gap: 0.75rem; background: #dcfce7; color: #15803d; font-weight: 500; font-family: var(--font-body); border: none; cursor: pointer;">
+                                <ion-icon name="share-social-outline" style="font-size: 1.2rem;"></ion-icon> <span>Share</span>
+                            </button>
+                            
+                            ${window.isAdmin ? `
+                            <button onclick="event.stopPropagation(); deleteTeacher('${escapeHTML(data.id)}')" style="width: 70%; max-width: 160px; border-radius: 999px; background: #fee2e2; display: flex; align-items: center; justify-content: flex-start; padding: 10px 10px 10px 24px; gap: 0.75rem; color: #b91c1c; font-weight: 500; font-family: var(--font-body); border: none; cursor: pointer; transition: transform 0.2s;">
+                                <ion-icon name="trash-outline" style="font-size: 1.2rem;"></ion-icon> <span>Delete</span>
+                            </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => fetchTeachers(false));
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .scale-in, .reveal-up');
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

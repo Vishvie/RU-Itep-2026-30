@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/index.html</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/batchmates.html</loc>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/teachers.html</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/events.html</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/calendar.html</loc>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/talents.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/contact.html</loc>
+    <changefreq>monthly</changefreq>
+  </url>
+</urlset>

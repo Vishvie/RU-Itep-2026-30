@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Ravenshaw University ITEP</title>
+    <meta name="description" content="Get in touch with the Ravenshaw University Integrated B.Ed Batch 2026-2030 student representatives.">
+    <meta property="og:title" content="Contact Us | Ravenshaw University ITEP">
+    <meta property="og:description" content="Get in touch with the Ravenshaw University Integrated B.Ed Batch 2026-2030 student representatives.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FFFFFF">
+
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/navbar.css">
+    <link rel="stylesheet" href="assets/css/home.css">
+    <style>
+        .page-header {
+            background-color: var(--bg-primary);
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--text-primary);
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Adjusting features section for contact page */
+        .features-section {
+            background-color: var(--bg-primary); /* Match page background instead of tertiary */
+            padding-top: 0;
+        }
+    </style>
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js">
+    <link rel="modulepreload" href="assets/js/firebase-init.js">
+</head>
+
+<body style="--nav-active-color: #FF6B6B;">
+
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/Ravenshaw_University_Logo.png" alt="Ravenshaw University" class="navbar-logo-img">
+                <span class="navbar-title">I.B.Ed 2026-2030</span>
+            </a>
+
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <ul class="navbar-menu" id="navbar-menu">
+                <li><a href="index.html" class="navbar-link">Home</a></li>
+                <li><a href="batchmates.html" class="navbar-link">Batchmates</a></li>
+                <li><a href="teachers.html" class="navbar-link">Teachers</a></li>
+                <li><a href="events.html" class="navbar-link">Events</a></li>
+                <li><a href="calendar.html" class="navbar-link">Calendar</a></li>
+                <li><a href="talents.html" class="navbar-link">Talents</a></li>
+                <li><a href="contact.html" class="navbar-link-btn active">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-header section">
+        <div class="container text-center">
+            <h1 class="page-title reveal">REACH OUT</h1>
+            <p class="page-subtitle reveal" style="transition-delay: 0.1s; max-width: 600px; margin: 1rem auto 0;">
+                Have a story to share or a question to ask? We'd love to hear from you. Get in touch with our batch coordinators.
+            </p>
+        </div>
+    </header>
+
+    <section class="features-section section">
+        <div class="container">
+            <div class="features-grid">
+                
+                <!-- Email Card -->
+                <a href="#" onclick="alert('Coming soon!'); return false;" class="feature-card reveal" style="transition-delay: 0.2s;">
+                    <div class="feature-icon icon-blue">
+                        <ion-icon name="mail"></ion-icon>
+                    </div>
+                    <h3 class="feature-title">Email Us</h3>
+                    <p class="feature-desc">For official inquiries and collaboration. We usually respond within 24 hours.</p>
+                    <div class="feature-link link-blue">Send Email <ion-icon name="arrow-forward"></ion-icon></div>
+                </a>
+
+                <!-- Instagram Card -->
+                <a href="#" onclick="alert('Coming soon!'); return false;" class="feature-card reveal" style="transition-delay: 0.3s;">
+                    <div class="feature-icon icon-pink">
+                        <ion-icon name="logo-instagram"></ion-icon>
+                    </div>
+                    <h3 class="feature-title">Instagram</h3>
+                    <p class="feature-desc">Follow our journey, view our galleries, and stay updated with live stories.</p>
+                    <div class="feature-link link-pink">Follow Us <ion-icon name="arrow-forward"></ion-icon></div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div style="line-height: 1.4; display: flex; flex-direction: column; gap: 0.3rem;"><p style="margin: 0;">INTEGRATED B.ED BATCH 2026-2030</p><p style="margin: 0; font-size: 0.85em; opacity: 0.8;">RAVENSHAW UNIVERSITY</p></div>
+                <div id="admin-auth-container" style="margin-top: 5px;">
+                    <a href="login.html" id="admin-login-link" style="color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: none; opacity: 0.7;">Admin Login</a>
+                    <button id="admin-logout-btn" style="display: none; background: none; border: none; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: underline; opacity: 0.7; cursor: pointer; padding: 0;">Admin Logout</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Reveal Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .scale-in');
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script type="module" src="assets/js/navbar.js"></script>
+    <script type="module" src="assets/js/auth.js"></script>
+</body>
+
+</html>

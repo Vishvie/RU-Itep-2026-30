@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar | Ravenshaw University ITEP</title>
+    <meta name="description" content="Academic calendar, events, and birthdays for the Ravenshaw University Integrated B.Ed Batch 2026-2030.">
+    <meta property="og:title" content="Calendar | Ravenshaw University ITEP">
+    <meta property="og:description" content="Academic calendar, events, and birthdays for the Ravenshaw University Integrated B.Ed Batch 2026-2030.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FFFFFF">
+    <meta name="description" content="View upcoming events and birthdays of batchmates and teachers.">
+
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/navbar.css">
+    <link rel="stylesheet" href="assets/css/events.css">
+
+    <style>
+        .page-header {
+            background-color: var(--bg-primary);
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--text-primary);
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .calendar-page-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .calendar-page-layout .calendar-wrapper {
+            position: sticky;
+            top: calc(var(--nav-height) + 2rem);
+        }
+
+        .upcoming-section h2 {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .upcoming-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .upcoming-item {
+            display: flex;
+            gap: 1.25rem;
+            align-items: flex-start;
+            padding: 1.25rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .upcoming-date-badge {
+            min-width: 52px;
+            text-align: center;
+            padding: 0.5rem 0.5rem;
+            border-radius: 8px;
+            background: var(--bg-secondary);
+        }
+
+        .upcoming-date-badge .day {
+            font-size: 1.4rem;
+            font-weight: 700;
+            line-height: 1;
+            color: var(--text-primary);
+        }
+
+        .upcoming-date-badge .month {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .upcoming-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .upcoming-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .upcoming-type {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            margin-bottom: 0.4rem;
+        }
+
+        .upcoming-type.event {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .upcoming-type.birthday {
+            background: #fce7f3;
+            color: #be185d;
+        }
+
+        .empty-upcoming {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        .upcoming-section {
+            order: -1;
+        }
+
+        @media (max-width: 900px) {
+            .calendar-page-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .calendar-page-layout .calendar-wrapper {
+                position: static;
+                width: 100%;
+            }
+            
+            .upcoming-section {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js">
+    <link rel="modulepreload" href="assets/js/firebase-init.js">
+</head>
+
+<body style="--nav-active-color: #5BE2FF;">
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/Ravenshaw_University_Logo.png" alt="Ravenshaw University" class="navbar-logo-img">
+                <span class="navbar-title">I.B.Ed 2026-2030</span>
+            </a>
+
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <ul class="navbar-menu" id="navbar-menu">
+                <li><a href="index.html" class="navbar-link">Home</a></li>
+                <li><a href="batchmates.html" class="navbar-link">Batchmates</a></li>
+                <li><a href="teachers.html" class="navbar-link">Teachers</a></li>
+                <li><a href="events.html" class="navbar-link">Events</a></li>
+                <li><a href="calendar.html" class="navbar-link active">Calendar</a></li>
+                <li><a href="talents.html" class="navbar-link">Talents</a></li>
+                <li><a href="contact.html" class="navbar-link-btn">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-header section">
+        <div class="container text-center">
+            <h1 class="page-title reveal">CALENDAR</h1>
+            <p class="page-subtitle reveal" style="transition-delay: 0.1s; max-width: 600px; margin: 1rem auto 0;">
+                Events & birthdays at a glance.
+            </p>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <div class="calendar-page-layout">
+
+                <!-- Left: Calendar -->
+                <div>
+                    <div class="calendar-wrapper reveal" style="transition-delay: 0.2s;">
+                        <div class="calendar-header">
+                            <button id="calendar-prev"><ion-icon name="chevron-back-outline"></ion-icon></button>
+                            <span id="calendar-month-year">Month Year</span>
+                            <button id="calendar-next"><ion-icon name="chevron-forward-outline"></ion-icon></button>
+                        </div>
+
+                        <div class="calendar-grid" id="calendar-grid">
+                            <div class="calendar-day-header">Sun</div>
+                            <div class="calendar-day-header">Mon</div>
+                            <div class="calendar-day-header">Tue</div>
+                            <div class="calendar-day-header">Wed</div>
+                            <div class="calendar-day-header">Thu</div>
+                            <div class="calendar-day-header">Fri</div>
+                            <div class="calendar-day-header">Sat</div>
+                        </div>
+
+                        <div class="calendar-legend">
+                            <div class="legend-item"><span class="indicator event"></span> Event</div>
+                            <div class="legend-item"><span class="indicator birthday"></span> Birthday</div>
+                        </div>
+
+                        <div class="day-details-panel" id="day-details-panel" style="display: none;">
+                            <div class="day-details-title" id="day-details-title">Details</div>
+                            <div id="day-details-content"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Upcoming Events & Birthdays -->
+                <div class="upcoming-section reveal" style="transition-delay: 0.3s;">
+                    <h2>Coming Up</h2>
+                    <div class="upcoming-list" id="upcoming-list">
+                        <!-- Exact Skeletons -->
+                        <div class="upcoming-item" style="pointer-events: none;">
+                            <div class="upcoming-date-badge skeleton" style="color: transparent; border: none; width: 60px; background: var(--bg-secondary);">
+                                <div class="day">&nbsp;</div>
+                                <div class="month">&nbsp;</div>
+                            </div>
+                            <div class="upcoming-info" style="width: 100%;">
+                                <span class="upcoming-type skeleton" style="color: transparent; width: 60px; margin-bottom: 0.5rem; display: inline-block;">&nbsp;</span>
+                                <h4 class="skeleton" style="color: transparent; width: 70%; border-radius: 4px; margin-bottom: 0.25rem;">&nbsp;</h4>
+                                <p class="skeleton" style="color: transparent; width: 40%; border-radius: 4px; margin: 0;">&nbsp;</p>
+                            </div>
+                        </div>
+                        <div class="upcoming-item" style="pointer-events: none;">
+                            <div class="upcoming-date-badge skeleton" style="color: transparent; border: none; width: 60px; background: var(--bg-secondary);">
+                                <div class="day">&nbsp;</div>
+                                <div class="month">&nbsp;</div>
+                            </div>
+                            <div class="upcoming-info" style="width: 100%;">
+                                <span class="upcoming-type skeleton" style="color: transparent; width: 60px; margin-bottom: 0.5rem; display: inline-block;">&nbsp;</span>
+                                <h4 class="skeleton" style="color: transparent; width: 70%; border-radius: 4px; margin-bottom: 0.25rem;">&nbsp;</h4>
+                                <p class="skeleton" style="color: transparent; width: 40%; border-radius: 4px; margin: 0;">&nbsp;</p>
+                            </div>
+                        </div>
+                        <div class="upcoming-item" style="pointer-events: none;">
+                            <div class="upcoming-date-badge skeleton" style="color: transparent; border: none; width: 60px; background: var(--bg-secondary);">
+                                <div class="day">&nbsp;</div>
+                                <div class="month">&nbsp;</div>
+                            </div>
+                            <div class="upcoming-info" style="width: 100%;">
+                                <span class="upcoming-type skeleton" style="color: transparent; width: 60px; margin-bottom: 0.5rem; display: inline-block;">&nbsp;</span>
+                                <h4 class="skeleton" style="color: transparent; width: 70%; border-radius: 4px; margin-bottom: 0.25rem;">&nbsp;</h4>
+                                <p class="skeleton" style="color: transparent; width: 40%; border-radius: 4px; margin: 0;">&nbsp;</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div style="line-height: 1.4; display: flex; flex-direction: column; gap: 0.3rem;"><p style="margin: 0;">INTEGRATED B.ED BATCH 2026-2030</p><p style="margin: 0; font-size: 0.85em; opacity: 0.8;">RAVENSHAW UNIVERSITY</p></div>
+                <div id="admin-auth-container" style="margin-top: 5px;">
+                    <a href="login.html" id="admin-login-link" style="color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: none; opacity: 0.7;">Admin Login</a>
+                    <button id="admin-logout-btn" style="display: none; background: none; border: none; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: underline; opacity: 0.7; cursor: pointer; padding: 0;">Admin Logout</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+
+    </script>
+
+    <script>
+        // Reveal Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .scale-in');
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+
+    <script type="module" src="assets/js/navbar.js"></script>
+    <script type="module" src="assets/js/auth.js"></script>
+    <script type="module">
+        import { db, auth, onAuthStateChanged, collection, getDocs, orderBy, query, where, escapeHTML } from './assets/js/firebase-init.js';
+
+
+
+        // Calendar State
+        let currentCalendarDate = new Date();
+        let calendarData = { events: [], birthdays: [] };
+        let isDataLoaded = false;
+
+        const calGrid = document.getElementById('calendar-grid');
+        const calMonthYear = document.getElementById('calendar-month-year');
+        const dayDetailsPanel = document.getElementById('day-details-panel');
+        const dayDetailsTitle = document.getElementById('day-details-title');
+        const dayDetailsContent = document.getElementById('day-details-content');
+
+        document.getElementById('calendar-prev').addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+            fetchAllData();
+        });
+        document.getElementById('calendar-next').addEventListener('click', () => {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+            fetchAllData();
+        });
+
+        async function fetchAllData() {
+            try {
+                const year = currentCalendarDate.getFullYear();
+                const month = currentCalendarDate.getMonth();
+                const nextMonth = (month + 1) % 12;
+
+                const startOfThisMonth = new Date(year, month, 1).toISOString().split('T')[0];
+                const endOfNextMonthObj = new Date(year, month + 2, 0); 
+                const endOfNextMonth = endOfNextMonthObj.toISOString().split('T')[0];
+
+                const eventsQ = query(collection(db, "events"), orderBy("date", "asc"));
+                const studentsQ = query(collection(db, "students"), where("birthMonth", "in", [month, nextMonth]));
+                const teachersQ = query(collection(db, "teachers"), where("birthMonth", "in", [month, nextMonth]));
+                
+                const [evSnap, studSnap, teachSnap] = await Promise.all([
+                    getDocs(eventsQ), getDocs(studentsQ), getDocs(teachersQ)
+                ]);
+
+                // Events
+                let events = [];
+                evSnap.forEach(doc => {
+                    const data = doc.data();
+                    if (data.date && data.date >= startOfThisMonth && data.date <= endOfNextMonth) {
+                        const d = new Date(data.date);
+                        events.push({ id: doc.id, ...data, parsedYear: d.getFullYear(), parsedMonth: d.getMonth(), parsedDate: d.getDate(), parsedTime: d.getTime() });
+                    }
+                });
+                calendarData.events = events;
+
+                // Birthdays
+                let bdays = [];
+                studSnap.forEach(doc => {
+                    const data = doc.data();
+                    if (data.dob) {
+                        const d = new Date(data.dob);
+                        bdays.push({ name: data.name, dob: data.dob, type: 'Student', parsedMonth: d.getMonth(), parsedDate: d.getDate() });
+                    }
+                });
+                teachSnap.forEach(doc => {
+                    const data = doc.data();
+                    if (data.dob) {
+                        const d = new Date(data.dob);
+                        bdays.push({ name: data.name, dob: data.dob, type: 'Teacher', parsedMonth: d.getMonth(), parsedDate: d.getDate() });
+                    }
+                });
+                calendarData.birthdays = bdays;
+
+                isDataLoaded = true;
+            } catch (e) {
+                console.error("Error fetching data:", e);
+                // Even on error, we should mark as loaded so skeletons disappear
+                isDataLoaded = true;
+            } finally {
+                renderCalendar();
+                renderUpcoming(calendarData.events, calendarData.birthdays);
+            }
+        }
+
+        function renderCalendar() {
+            calGrid.innerHTML = `
+                <div class="calendar-day-header">Sun</div><div class="calendar-day-header">Mon</div>
+                <div class="calendar-day-header">Tue</div><div class="calendar-day-header">Wed</div>
+                <div class="calendar-day-header">Thu</div><div class="calendar-day-header">Fri</div>
+                <div class="calendar-day-header">Sat</div>
+            `;
+
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+
+            calMonthYear.textContent = new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' });
+
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+
+            for (let x = 0; x < firstDayIndex; x++) {
+                calGrid.innerHTML += `<div class="calendar-day empty"></div>`;
+            }
+
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-day';
+                dayEl.textContent = i;
+
+                if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    dayEl.classList.add('today');
+                    dayEl.style.cursor = 'default';
+                }
+
+                let hasEvent = false;
+                let dayEvents = [];
+                calendarData.events.forEach(ev => {
+                    if (ev.parsedDate === i && ev.parsedMonth === month && ev.parsedYear === year) {
+                        hasEvent = true;
+                        dayEvents.push(ev);
+                    }
+                });
+
+                let hasBday = false;
+                let dayBdays = [];
+                calendarData.birthdays.forEach(b => {
+                    if (b.parsedDate === i && b.parsedMonth === month) {
+                        hasBday = true;
+                        dayBdays.push(b);
+                    }
+                });
+
+                let indicatorHTML = '<div class="day-indicators">';
+                if (hasEvent) indicatorHTML += '<span class="indicator event"></span>';
+                if (hasBday) indicatorHTML += '<span class="indicator birthday"></span>';
+                indicatorHTML += '</div>';
+                dayEl.innerHTML += indicatorHTML;
+
+                dayEl.addEventListener('click', () => {
+                    if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) return;
+                    
+                    document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
+                    dayEl.classList.add('selected');
+                    showDayDetails(i, month, year, dayEvents, dayBdays);
+                });
+
+                calGrid.appendChild(dayEl);
+            }
+        }
+
+        function showDayDetails(day, month, year, events, bdays) {
+            dayDetailsPanel.style.display = 'block';
+            dayDetailsTitle.textContent = `${new Date(year, month, day).toLocaleString('default', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+
+            let html = '';
+            if (events.length === 0 && bdays.length === 0) {
+                html = '<p style="color: var(--text-secondary); font-size: 0.9rem;">Nothing scheduled on this day.</p>';
+            } else {
+                events.forEach(e => {
+                    html += `<div class="detail-item">
+                                <span class="indicator event" style="display:inline-block; position:static;"></span>
+                                <strong>Event:</strong> ${escapeHTML(e.title)}
+                             </div>`;
+                });
+                bdays.forEach(b => {
+                    html += `<div class="detail-item">
+                                <span class="indicator birthday" style="display:inline-block; position:static;"></span>
+                                <strong>Birthday:</strong> ${escapeHTML(b.name)} (${escapeHTML(b.type)})
+                             </div>`;
+                });
+            }
+            dayDetailsContent.innerHTML = html;
+        }
+
+        function renderUpcoming(events, birthdays) {
+            const list = document.getElementById('upcoming-list');
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            let upcoming = [];
+
+            // Add upcoming events (next 60 days)
+            events.forEach(ev => {
+                if (!ev.parsedTime) return;
+                const d = new Date(ev.parsedTime);
+                if (d >= today) {
+                    upcoming.push({
+                        date: d,
+                        title: ev.title,
+                        desc: ev.description || '',
+                        type: 'event'
+                    });
+                }
+            });
+
+            // Add upcoming birthdays (next 60 days)
+            const endDate = new Date(today);
+            endDate.setDate(endDate.getDate() + 60);
+
+            birthdays.forEach(b => {
+                if (b.parsedMonth === undefined) return;
+                // Create this year's birthday
+                const thisYearBday = new Date(today.getFullYear(), b.parsedMonth, b.parsedDate);
+                if (thisYearBday < today) {
+                    thisYearBday.setFullYear(thisYearBday.getFullYear() + 1);
+                }
+                if (thisYearBday <= endDate) {
+                    upcoming.push({
+                        date: thisYearBday,
+                        title: `${b.name}'s Birthday`,
+                        desc: b.type,
+                        type: 'birthday'
+                    });
+                }
+            });
+
+            // Sort by date
+            upcoming.sort((a, b) => a.date - b.date);
+
+            if (upcoming.length === 0) {
+                list.innerHTML = `<div class="empty-upcoming"><p>No upcoming events or birthdays in the next 60 days.</p></div>`;
+                return;
+            }
+
+            list.innerHTML = '';
+            upcoming.slice(0, 15).forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'upcoming-item';
+                el.innerHTML = `
+                    <div class="upcoming-date-badge">
+                        <div class="day">${item.date.getDate()}</div>
+                        <div class="month">${item.date.toLocaleString('default', { month: 'short' })}</div>
+                    </div>
+                    <div class="upcoming-info">
+                        <span class="upcoming-type ${escapeHTML(item.type)}">${escapeHTML(item.type)}</span>
+                        <h4>${escapeHTML(item.title)}</h4>
+                        <p>${escapeHTML(item.desc)}</p>
+                    </div>
+                `;
+                list.appendChild(el);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchAllData);
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

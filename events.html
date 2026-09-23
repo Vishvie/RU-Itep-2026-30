@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events | Ravenshaw University ITEP</title>
+    <meta name="description" content="Browse upcoming events, past activities, and gallery items for the Ravenshaw University Integrated B.Ed program.">
+    <meta property="og:title" content="Events | Ravenshaw University ITEP">
+    <meta property="og:description" content="Browse upcoming events, past activities, and gallery items for the Ravenshaw University Integrated B.Ed program.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FFFFFF">
+
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/navbar.css">
+    <link rel="stylesheet" href="assets/css/profiles.css">
+    <link rel="stylesheet" href="assets/css/events.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js">
+    <link rel="modulepreload" href="assets/js/firebase-init.js">
+    <link rel="modulepreload" href="assets/js/firebase-init.js">
+</head>
+
+<body style="--nav-active-color: #FF9900;">
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/Ravenshaw_University_Logo.png" alt="Ravenshaw University" class="navbar-logo-img">
+                <span class="navbar-title">I.B.Ed 2026-2030</span>
+            </a>
+
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <ul class="navbar-menu" id="navbar-menu">
+                <li><a href="index.html" class="navbar-link">Home</a></li>
+                <li><a href="batchmates.html" class="navbar-link">Batchmates</a></li>
+                <li><a href="teachers.html" class="navbar-link">Teachers</a></li>
+                <li><a href="events.html" class="navbar-link active">Events</a></li>
+                <li><a href="calendar.html" class="navbar-link">Calendar</a></li>
+                <li><a href="talents.html" class="navbar-link">Talents</a></li>
+                <li><a href="contact.html" class="navbar-link-btn">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="page-header section">
+        <div class="container text-center">
+            <h1 class="page-title reveal">Our <span class="title-highlight">Memories</span></h1>
+            <p class="page-subtitle reveal" style="transition-delay: 0.1s; max-width: 600px; margin: 1rem auto 0;">
+                A look back at the moments that defined our journey as a family.
+            </p>
+        </div>
+    </header>
+
+    <!-- Events Grid -->
+    <section class="events-section section" style="padding-top: 2rem; min-height: 70vh;">
+        <div class="container">
+                
+
+
+                <div class="profiles-grid" id="events-grid">
+                    <!-- Add Card (Admin) - Hardcoded to prevent layout shift -->
+                    <div class="add-card admin-only-card animate-in" onclick="openAddEventModal()" style="box-shadow: none;">
+                        <div class="add-card-content">
+                            <ion-icon name="add-circle" class="add-card-icon"></ion-icon>
+                            <span class="add-card-text">Add New Event</span>
+                        </div>
+                    </div>
+
+                    <!-- Event Skeletons while loading -->
+                    <div class="profile-card" style="box-shadow: none; pointer-events: none;">
+                        <div class="profile-card-inner">
+                            <div class="profile-card-front" style="padding: 0; overflow: hidden; border: 1px solid var(--border-color); position: relative; background: var(--bg-secondary);">
+                                <div class="skeleton" style="position: absolute; bottom: 1.5rem; left: 1.5rem; width: 60%; height: 1.5rem; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-card" style="box-shadow: none; pointer-events: none;">
+                        <div class="profile-card-inner">
+                            <div class="profile-card-front" style="padding: 0; overflow: hidden; border: 1px solid var(--border-color); position: relative; background: var(--bg-secondary);">
+                                <div class="skeleton" style="position: absolute; bottom: 1.5rem; left: 1.5rem; width: 60%; height: 1.5rem; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-card" style="box-shadow: none; pointer-events: none;">
+                        <div class="profile-card-inner">
+                            <div class="profile-card-front" style="padding: 0; overflow: hidden; border: 1px solid var(--border-color); position: relative; background: var(--bg-secondary);">
+                                <div class="skeleton" style="position: absolute; bottom: 1.5rem; left: 1.5rem; width: 60%; height: 1.5rem; border-radius: 4px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="no-results" class="empty-state" style="display: none;">
+                    <h3>No events found</h3>
+                    <p>There are no events in this category.</p>
+                </div>
+                
+                <!-- Pagination for the 2x2 grid -->
+                <div id="events-pagination" style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem;">
+                    <button id="prev-events-btn" class="btn-primary" style="padding: 8px 16px; border-radius: 999px; display: none;">Previous</button>
+                    <button id="next-events-btn" class="btn-primary" style="padding: 8px 16px; border-radius: 999px; display: none;">Next</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div style="line-height: 1.4; display: flex; flex-direction: column; gap: 0.3rem;"><p style="margin: 0;">INTEGRATED B.ED BATCH 2026-2030</p><p style="margin: 0; font-size: 0.85em; opacity: 0.8;">RAVENSHAW UNIVERSITY</p></div>
+                <div id="admin-auth-container" style="margin-top: 5px;">
+                    <a href="login.html" id="admin-login-link" style="color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: none; opacity: 0.7; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Admin Login</a>
+                    <button id="admin-logout-btn" style="display: none; background: none; border: none; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: underline; opacity: 0.7; transition: opacity 0.3s; cursor: pointer; padding: 0;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Admin Logout</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Modal -->
+    <div class="admin-modal-overlay" id="add-event-modal">
+        <div class="admin-modal">
+            <div class="admin-modal-header">
+                <h3>Add New Event</h3>
+                <button class="btn-close" id="close-event-modal"><ion-icon name="close"></ion-icon></button>
+            </div>
+            <div class="admin-modal-body">
+                <div>
+                    <div id="event-msg" class="success-message"></div>
+                    <form id="event-form">
+                        <div class="form-group">
+                            <label for="event-title">Event Title</label>
+                            <input type="text" id="event-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-date">Date</label>
+                            <input type="date" id="event-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-desc">Event Description</label>
+                            <textarea id="event-desc" required rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-image">Cover Image URL</label>
+                            <input type="url" id="event-image" required>
+                        </div>
+                        <!-- Removed Album Folder Link -->
+                    </form>
+                </div>
+
+            </div>
+            <div class="admin-modal-footer">
+                <button type="submit" class="btn-primary" id="event-submit" form="event-form" style="width: 100%; max-width: 300px;">Save Event</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Details Overlay (Mobile First Full Screen) -->
+    <div id="event-details-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-primary); z-index: 9999; overflow-y: auto; overflow-x: hidden;">
+        <div style="max-width: 800px; margin: 0 auto; min-height: 100vh; background: var(--bg-primary); padding-bottom: 4rem;">
+            
+            <!-- Sticky Header -->
+            <div style="position: sticky; top: 0; z-index: 10; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 1rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 1rem;">
+                <button id="close-details-modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-primary); display: flex; align-items: center; padding: 0.5rem; margin: -0.5rem;"><ion-icon name="arrow-back-outline"></ion-icon></button>
+                <h3 id="details-modal-title" style="margin: 0; font-size: 1.1rem; font-family: 'Poppins', sans-serif; font-weight: 500;">Event Details</h3>
+            </div>
+            
+            <!-- Body Content -->
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                
+                <!-- Event Cover Image (Full width on mobile) -->
+                <div style="position: relative; width: 100%;">
+                    <img id="details-modal-cover" src="" alt="Cover" style="width: 100%; height: 35vh; min-height: 250px; max-height: 400px; object-fit: cover;">
+                    <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); padding: 3rem 1.5rem 1.5rem;">
+                        <h2 id="details-modal-heading" style="margin: 0; font-family: 'Poppins', sans-serif; font-size: 1.8rem; color: white; line-height: 1.2;"></h2>
+                        <p id="details-modal-date" style="color: rgba(255,255,255,0.8); font-weight: 500; margin-top: 0.5rem; font-size: 0.95rem;"></p>
+                    </div>
+                </div>
+
+                <!-- Event Description & Actions -->
+                <div style="padding: 0 1.5rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+                    <p id="details-modal-desc" style="margin: 0; font-size: 1rem; line-height: 1.6; color: var(--text-secondary); flex: 1; min-width: 250px;"></p>
+                    
+                    <div id="details-action-buttons" style="display: flex; gap: 0.75rem;">
+
+                        <button id="details-delete-btn" style="display: none; background: rgba(255, 50, 50, 0.1); border: 1px solid rgba(255, 50, 50, 0.2); color: red; border-radius: 50%; width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; cursor: pointer; font-size: 1.25rem; transition: transform 0.2s, background 0.2s;" title="Delete Event" onmouseover="this.style.transform='scale(1.1)'; this.style.background='rgba(255, 50, 50, 0.15)';" onmouseout="this.style.transform='scale(1)'; this.style.background='rgba(255, 50, 50, 0.1)';">
+                            <ion-icon name="trash-outline"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Admin Upload Section -->
+                <div id="details-admin-section" style="display: none; padding: 0 1.5rem;">
+                    <div style="padding: 1.5rem; border: 1px dashed var(--border-color); border-radius: 12px; background: rgba(0,0,0,0.02);">
+                        <h4 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.1rem;">Add Media</h4>
+                        <form id="add-media-form" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label for="media-url" style="font-size: 0.9rem;">Image/Video URL (Google Drive or direct link)</label>
+                                <input type="url" id="media-url" required style="width: 100%; box-sizing: border-box;">
+                            </div>
+                            <button type="submit" class="btn-primary" id="add-media-btn" style="width: 100%; justify-content: center; padding: 0.8rem;">Add Media</button>
+                        </form>
+                        <div id="media-msg" style="display: none; margin-top: 1rem; font-size: 0.9rem; text-align: center;"></div>
+                    </div>
+                </div>
+
+                <!-- Media Grid -->
+                <div style="padding: 0 1.5rem;">
+                    <h3 style="margin-top: 0; margin-bottom: 1rem; font-size: 1.2rem; font-family: 'Poppins', sans-serif;">Event Gallery</h3>
+                    <div id="details-media-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem;">
+                        <!-- Media items will be rendered here -->
+                    </div>
+                    <div id="no-media-msg" style="display: none; text-align: center; color: var(--text-secondary); padding: 3rem 0; font-size: 0.95rem;">
+                        No images or videos have been added yet.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Lightbox Overlay -->
+    <div id="image-lightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 10000; justify-content: center; align-items: center; user-select: none;">
+        <button id="close-lightbox-btn" style="position: absolute; top: 1.5rem; right: 1.5rem; background: rgba(255,255,255,0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(5px); z-index: 10001;"><ion-icon name="close-outline"></ion-icon></button>
+        <button id="prev-lightbox-btn" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(5px); z-index: 10001;"><ion-icon name="chevron-back-outline"></ion-icon></button>
+        <button id="next-lightbox-btn" style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(5px); z-index: 10001;"><ion-icon name="chevron-forward-outline"></ion-icon></button>
+        <img id="lightbox-img" src="" alt="Enlarged view" style="max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); pointer-events: none;">
+        <div id="lightbox-counter" style="position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.8); font-size: 0.9rem; font-family: 'Poppins', sans-serif;"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="assets/js/navbar.js"></script>
+    <script type="module" src="assets/js/auth.js"></script>
+
+    <script type="module">
+        import { db, auth, onAuthStateChanged, collection, getDocs, orderBy, query, addDoc, doc, deleteDoc, updateDoc, arrayUnion, escapeHTML } from './assets/js/firebase-init.js';
+
+        let allEventsList = [];
+        let currentPage = 1;
+        const eventsPerPage = 12; // Enable pagination with 12 events per page
+        let isDataLoaded = false;
+        
+        onAuthStateChanged(auth, (user) => {
+            window.isAdmin = !!user;
+            if (isDataLoaded) renderEventsPage();
+        });
+
+        // Modal Logic
+        const modal = document.getElementById('add-event-modal');
+        document.getElementById('close-event-modal').addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        window.openAddEventModal = () => {
+            modal.classList.add('active');
+            document.getElementById('event-msg').style.display = 'none';
+        };
+
+        // Form Submit
+        const eventForm = document.getElementById('event-form');
+        const eventBtn = document.getElementById('event-submit');
+        const eventMsg = document.getElementById('event-msg');
+
+                document.getElementById('preview-event-date').textContent = 'Jan 1, 2026';
+            }
+        });
+
+        // Convert Google Drive view links to direct image links
+        function formatImageUrl(url) {
+            if (url.includes('drive.google.com')) {
+                const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                }
+            }
+            return url;
+        }
+
+        eventForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            eventBtn.disabled = true;
+            eventBtn.textContent = 'Saving...';
+            eventMsg.style.display = 'none';
+
+            try {
+                let imageUrl = formatImageUrl(document.getElementById('event-image').value);
+                
+                await addDoc(collection(db, "events"), {
+                    title: document.getElementById('event-title').value,
+                    date: document.getElementById('event-date').value,
+                    description: document.getElementById('event-desc').value,
+                    image: imageUrl,
+                    createdAt: new Date().toISOString()
+                });
+                eventMsg.textContent = 'Event added successfully!';
+                eventMsg.style.display = 'block';
+                eventForm.reset();
+                setTimeout(() => modal.classList.remove('active'), 1000);
+                fetchEvents();
+            } catch (error) {
+                alert("Error adding document: " + error.message);
+            } finally {
+                eventBtn.disabled = false;
+                eventBtn.textContent = 'Save Event';
+            }
+        });
+
+        // Delete Logic
+        window.deleteEvent = async (id) => {
+            if(confirm("Are you sure you want to delete this event?")) {
+                try {
+                    await deleteDoc(doc(db, "events", id));
+                    fetchEvents();
+                } catch(e) {
+                    alert("Error deleting: " + e.message);
+                }
+            }
+        };
+
+        window.shareEvent = (title, date) => {
+            const formattedDate = new Date(date).toLocaleDateString('default', { month: 'short', day: 'numeric', year: 'numeric' });
+            const text = `Check out the event "${title}" happening on ${formattedDate} at Ravenshaw ITEP!`;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Ravenshaw Event',
+                    text: text,
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(text + " " + window.location.href);
+                alert("Event info copied to clipboard!");
+            }
+        };
+
+        // Event Details Logic
+        let currentEventId = null;
+        const detailsModal = document.getElementById('event-details-modal');
+        
+        document.getElementById('close-details-modal').addEventListener('click', () => {
+            detailsModal.style.display = 'none';
+            document.body.style.overflow = '';
+            currentEventId = null;
+        });
+
+        window.openEventDetails = (eventId) => {
+            const eventData = allEventsList.find(e => e.id === eventId);
+            if (!eventData) return;
+            
+            currentEventId = eventId;
+            
+            // Populate header
+            document.getElementById('details-modal-cover').src = eventData.image ? formatImageUrl(eventData.image) : 'assets/images/placeholder.jpg';
+            document.getElementById('details-modal-heading').textContent = eventData.title;
+            document.getElementById('details-modal-date').textContent = new Date(eventData.date).toLocaleDateString('default', { month: 'short', day: 'numeric' });
+            document.getElementById('details-modal-desc').textContent = eventData.description || '';
+            
+            // Admin options
+            const deleteBtn = document.getElementById('details-delete-btn');
+            if (window.isAdmin) {
+                document.getElementById('details-admin-section').style.display = 'block';
+                document.getElementById('media-msg').style.display = 'none';
+                deleteBtn.style.display = 'flex';
+                deleteBtn.onclick = () => {
+                    deleteEvent(eventData.id);
+                    detailsModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                };
+            } else {
+                document.getElementById('details-admin-section').style.display = 'none';
+                deleteBtn.style.display = 'none';
+            }
+            
+
+            
+            renderMediaGrid(eventData.mediaLinks || []);
+            
+            detailsModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        };
+
+        let currentLightboxImages = [];
+        let currentLightboxIndex = 0;
+
+        function renderMediaGrid(links) {
+            const grid = document.getElementById('details-media-grid');
+            const noMediaMsg = document.getElementById('no-media-msg');
+            
+            grid.innerHTML = '';
+            
+            if (links.length === 0) {
+                noMediaMsg.style.display = 'block';
+                currentLightboxImages = [];
+            } else {
+                noMediaMsg.style.display = 'none';
+                currentLightboxImages = links.map(link => formatImageUrl(link));
+                links.forEach((link, index) => {
+                    const url = escapeHTML(formatImageUrl(link));
+                    grid.innerHTML += `
+                        <div onclick="openLightbox(${index})" style="border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); aspect-ratio: 1/1; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                            <img src="${url}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='assets/images/placeholder.jpg'">
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        const lightbox = document.getElementById('image-lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCounter = document.getElementById('lightbox-counter');
+
+        function updateLightboxImage() {
+            if (currentLightboxImages.length === 0) return;
+            lightboxImg.src = currentLightboxImages[currentLightboxIndex];
+            lightboxCounter.textContent = `${currentLightboxIndex + 1} / ${currentLightboxImages.length}`;
+            
+            document.getElementById('prev-lightbox-btn').style.display = currentLightboxIndex > 0 ? 'flex' : 'none';
+            document.getElementById('next-lightbox-btn').style.display = currentLightboxIndex < currentLightboxImages.length - 1 ? 'flex' : 'none';
+        }
+
+        window.openLightbox = (index) => {
+            currentLightboxIndex = index;
+            updateLightboxImage();
+            lightbox.style.display = 'flex';
+        };
+
+        document.getElementById('close-lightbox-btn').addEventListener('click', () => {
+            lightbox.style.display = 'none';
+        });
+
+        document.getElementById('prev-lightbox-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentLightboxIndex > 0) {
+                currentLightboxIndex--;
+                updateLightboxImage();
+            }
+        });
+
+        document.getElementById('next-lightbox-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentLightboxIndex < currentLightboxImages.length - 1) {
+                currentLightboxIndex++;
+                updateLightboxImage();
+            }
+        });
+
+        // Swipe logic
+        let touchstartX = 0;
+        let touchendX = 0;
+        
+        lightbox.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        });
+
+        lightbox.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchendX < touchstartX - 50) { // Swipe left (next)
+                if (currentLightboxIndex < currentLightboxImages.length - 1) {
+                    currentLightboxIndex++;
+                    updateLightboxImage();
+                }
+            }
+            if (touchendX > touchstartX + 50) { // Swipe right (prev)
+                if (currentLightboxIndex > 0) {
+                    currentLightboxIndex--;
+                    updateLightboxImage();
+                }
+            }
+        }
+        
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.style.display = 'none';
+            }
+        });
+
+        document.getElementById('add-media-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentEventId) return;
+            
+            const btn = document.getElementById('add-media-btn');
+            const msg = document.getElementById('media-msg');
+            const urlInput = document.getElementById('media-url');
+            const url = urlInput.value.trim();
+            
+            if (!url) return;
+            
+            btn.disabled = true;
+            btn.textContent = 'Adding...';
+            msg.style.display = 'none';
+            
+            try {
+                const eventRef = doc(db, "events", currentEventId);
+                await updateDoc(eventRef, {
+                    mediaLinks: arrayUnion(url)
+                });
+                
+                // Update local state
+                const eventIndex = allEventsList.findIndex(e => e.id === currentEventId);
+                if (eventIndex !== -1) {
+                    if (!allEventsList[eventIndex].mediaLinks) {
+                        allEventsList[eventIndex].mediaLinks = [];
+                    }
+                    allEventsList[eventIndex].mediaLinks.push(url);
+                    renderMediaGrid(allEventsList[eventIndex].mediaLinks);
+                }
+                
+                urlInput.value = '';
+                msg.textContent = 'Media added successfully!';
+                msg.style.color = '#28a745';
+                msg.style.display = 'block';
+            } catch (error) {
+                msg.textContent = 'Error: ' + error.message;
+                msg.style.color = '#dc3545';
+                msg.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Add Media';
+            }
+        });
+
+        async function fetchEvents() {
+            const grid = document.getElementById('events-grid');
+            
+            try {
+                const q = query(collection(db, "events"), orderBy("date", "desc"));
+                const querySnapshot = await getDocs(q);
+                
+                allEventsList = [];
+                querySnapshot.forEach((docSnap) => {
+                    allEventsList.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                
+                isDataLoaded = true;
+                renderEventsPage();
+            } catch (error) {
+                console.error("Error fetching events:", error);
+                grid.innerHTML = '<p>Error loading events.</p>';
+            }
+        }
+        
+        function renderEventsPage() {
+            const grid = document.getElementById('events-grid');
+            grid.innerHTML = '';
+            
+            let itemsToRender = [...allEventsList];
+            
+            if (window.isAdmin) {
+                itemsToRender.unshift({ isAddCard: true });
+            }
+            
+            if (itemsToRender.length === 0 && !window.isAdmin) {
+                document.getElementById('no-results').style.display = 'block';
+                document.getElementById('events-pagination').style.display = 'none';
+                return;
+            } else {
+                document.getElementById('no-results').style.display = 'none';
+            }
+            
+            const totalPages = Math.ceil(itemsToRender.length / eventsPerPage);
+            const startIndex = (currentPage - 1) * eventsPerPage;
+            const pageItems = itemsToRender.slice(startIndex, startIndex + eventsPerPage);
+            
+            pageItems.forEach(data => {
+                if (data.isAddCard) {
+                    grid.innerHTML += `
+                        <div class="add-card" onclick="openAddEventModal()">
+                            <div class="add-card-content">
+                                <ion-icon name="add-circle" class="add-card-icon"></ion-icon>
+                                <span class="add-card-text">Add New Event</span>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const card = document.createElement('div');
+                card.className = 'profile-card animate-in';
+                card.style.position = 'relative';
+                card.style.cursor = 'pointer';
+                card.onclick = () => openEventDetails(data.id);
+
+
+                const formattedDate = new Date(data.date).toLocaleDateString('default', { month: 'short', day: 'numeric' });
+                
+                card.innerHTML = `
+                    <div style="padding: 0; overflow: hidden; border: 1px solid var(--border-color); position: relative; border-radius: 15px; height: 100%; min-height: 350px;">
+                        <img src="${escapeHTML(data.image)}" alt="${escapeHTML(data.title)}" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" onerror="this.src='assets/images/placeholder.jpg'" loading="lazy">
+                        <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); pointer-events: none;"></div>
+                        <h3 style="position: absolute; bottom: 1.5rem; left: 1.5rem; margin: 0; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 2.2rem; color: rgba(255, 255, 255, 0.7); max-width: 80%; line-height: 1.2;">${escapeHTML(data.title)}</h3>
+                        <div style="position: absolute; top: 1.5rem; right: 1.5rem; color: rgba(255, 255, 255, 0.8); text-shadow: 0 2px 8px rgba(0,0,0,0.8); font-weight: 600; font-size: 1.3rem; font-family: 'Poppins', sans-serif; letter-spacing: 0.5px;">
+                            ${escapeHTML(formattedDate)}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            
+            const prevBtn = document.getElementById('prev-events-btn');
+            const nextBtn = document.getElementById('next-events-btn');
+            
+            if (totalPages > 1) {
+                document.getElementById('events-pagination').style.display = 'flex';
+                prevBtn.style.display = currentPage > 1 ? 'block' : 'none';
+                nextBtn.style.display = currentPage < totalPages ? 'block' : 'none';
+            } else {
+                document.getElementById('events-pagination').style.display = 'none';
+            }
+        }
+        
+        document.getElementById('prev-events-btn').addEventListener('click', () => {
+            if (currentPage > 1) { currentPage--; renderEventsPage(); }
+        });
+        document.getElementById('next-events-btn').addEventListener('click', () => {
+            const totalPages = Math.ceil((allEventsList.length + (window.isAdmin ? 1 : 0)) / eventsPerPage);
+            if (currentPage < totalPages) { currentPage++; renderEventsPage(); }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => fetchEvents());
+
+    </script>
+
+    <script>
+        // Reveal Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .scale-in');
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

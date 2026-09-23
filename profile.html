@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile | Ravenshaw University ITEP</title>
+    <meta name="description" content="View student profile details, skills, and contact information.">
+    <meta property="og:title" content="Student Profile | Ravenshaw University ITEP">
+    <meta property="og:description" content="View student profile details, skills, and contact information.">
+    <meta property="og:type" content="profile">
+    <meta name="theme-color" content="#FFFFFF">
+
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/navbar.css">
+    <link rel="stylesheet" href="assets/css/profiles.css">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js">
+    <link rel="modulepreload" href="assets/js/firebase-init.js">
+</head>
+
+<body style="--nav-active-color: #7C6BFF;">
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/Ravenshaw_University_Logo.png" alt="Ravenshaw University" class="navbar-logo-img">
+                <span class="navbar-title">I.B.Ed 2026-2030</span>
+            </a>
+
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <ul class="navbar-menu" id="navbar-menu">
+                <li><a href="index.html" class="navbar-link">Home</a></li>
+                <li><a href="batchmates.html" class="navbar-link active">Batchmates</a></li>
+                <li><a href="teachers.html" class="navbar-link">Teachers</a></li>
+                <li><a href="events.html" class="navbar-link">Events</a></li>
+                <li><a href="calendar.html" class="navbar-link">Calendar</a></li>
+                <li><a href="talents.html" class="navbar-link">Talents</a></li>
+                <li><a href="contact.html" class="navbar-link-btn">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Profile Detail Section -->
+    <section class="profile-detail-section section" id="profile-container">
+        <div class="container">
+            <div id="loading-state">
+                <!-- Exact Skeleton -->
+                <div class="profile-detail-grid" style="pointer-events: none;">
+                    <!-- Image Column Skeleton -->
+                    <div>
+                        <div class="skeleton profile-detail-img" style="border: none; background: var(--bg-secondary); box-shadow: none;"></div>
+                    </div>
+
+                    <!-- Info Column Skeleton -->
+                    <div>
+                        <div class="profile-detail-header">
+                            <h1 class="skeleton" style="color: transparent; width: 60%; border-radius: 4px; margin-bottom: 1rem;">&nbsp;</h1>
+                            <div class="profile-detail-meta" style="gap: 1rem;">
+                                <span class="skeleton" style="color: transparent; width: 80px; border-radius: 4px;">&nbsp;</span>
+                                <span class="skeleton" style="color: transparent; width: 100px; border-radius: 4px;">&nbsp;</span>
+                                <span class="skeleton" style="color: transparent; width: 120px; border-radius: 4px;">&nbsp;</span>
+                            </div>
+                        </div>
+
+                        <h2 class="profile-section-title skeleton" style="color: transparent; width: 30%; border-radius: 4px; margin-bottom: 1rem; margin-top: 2rem;">&nbsp;</h2>
+                        <p class="skeleton" style="color: transparent; width: 100%; border-radius: 4px; margin-bottom: 0.5rem;">&nbsp;</p>
+                        <p class="skeleton" style="color: transparent; width: 100%; border-radius: 4px; margin-bottom: 0.5rem;">&nbsp;</p>
+                        <p class="skeleton" style="color: transparent; width: 80%; border-radius: 4px; margin-bottom: 2rem;">&nbsp;</p>
+                        
+                        <h2 class="profile-section-title skeleton" style="color: transparent; width: 40%; border-radius: 4px; margin-bottom: 1rem;">&nbsp;</h2>
+                        <div class="profile-skills">
+                            <span class="skeleton" style="color: transparent; width: 80px; border-radius: 20px; padding: 0.5rem 1rem; display: inline-block;">&nbsp;</span>
+                            <span class="skeleton" style="color: transparent; width: 100px; border-radius: 20px; padding: 0.5rem 1rem; display: inline-block;">&nbsp;</span>
+                            <span class="skeleton" style="color: transparent; width: 90px; border-radius: 20px; padding: 0.5rem 1rem; display: inline-block;">&nbsp;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="error-state" class="text-center" style="display: none;">
+                <h2>Profile not found.</h2>
+                <p>The profile you are looking for may have been removed.</p>
+                <a href="batchmates.html" class="btn btn-primary" style="margin-top: 1rem;">Back to Student Directory</a>
+            </div>
+
+            <div id="profile-content" class="profile-detail-grid" style="display: none;">
+                <!-- Image Column -->
+                <div class="reveal">
+                    <img src="" alt="Profile Image" id="detail-image" class="profile-detail-img">
+                </div>
+
+                <!-- Info Column -->
+                <div class="reveal" style="transition-delay: 0.1s">
+                    <div class="profile-detail-header">
+                        <h1 class="profile-detail-name" id="detail-name"></h1>
+                        <div class="profile-detail-meta">
+                            <span id="detail-course"></span>
+                            <span id="detail-batch"></span>
+                            <span id="detail-department"></span>
+                        </div>
+
+                        <div class="social-links" id="social-links-container">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <h2 class="profile-section-title">Biography</h2>
+                    <div id="detail-bio" style="color: var(--text-secondary); line-height: 1.8;"></div>
+
+                    <div id="skills-section" style="display: none;">
+                        <h2 class="profile-section-title">Skills & Interests</h2>
+                        <div class="profile-skills" id="detail-skills">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <a href="batchmates.html" class="btn btn-secondary" style="margin-top: 3rem;">&larr; Back to all
+                        Profiles</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div style="line-height: 1.4; display: flex; flex-direction: column; gap: 0.3rem;"><p style="margin: 0;">INTEGRATED B.ED BATCH 2026-2030</p><p style="margin: 0; font-size: 0.85em; opacity: 0.8;">RAVENSHAW UNIVERSITY</p></div>
+                <div id="admin-auth-container" style="margin-top: 5px;">
+                    <a href="login.html" id="admin-login-link" style="color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: none; opacity: 0.7;">Admin Login</a>
+                    <button id="admin-logout-btn" style="display: none; background: none; border: none; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: underline; opacity: 0.7; cursor: pointer; padding: 0;">Admin Logout</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script type="module" src="assets/js/navbar.js"></script>
+    <script type="module" src="assets/js/auth.js"></script>
+    <script type="module">
+        import { db, doc, getDoc, escapeHTML } from './assets/js/firebase-init.js';
+
+        // Fetch profile data
+        async function loadProfile() {
+            const params = new URLSearchParams(window.location.search);
+            const studentId = params.get('id');
+            const type = params.get('type') || 'students'; // 'students' or 'teachers'
+
+            if (!studentId) {
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('error-state').style.display = 'block';
+                return;
+            }
+
+            try {
+                const docSnap = await getDoc(doc(db, type, studentId));
+                
+                if (!docSnap.exists()) {
+                    document.getElementById('loading-state').style.display = 'none';
+                    document.getElementById('error-state').style.display = 'block';
+                    return;
+                }
+
+                const data = docSnap.data();
+                
+                // Populate fields
+                document.getElementById('detail-name').textContent = data.name || 'Unknown';
+                document.getElementById('detail-image').src = data.image || 'assets/images/placeholder.jpg';
+                document.getElementById('detail-image').onerror = function() { this.src = 'assets/images/placeholder.jpg'; };
+                document.getElementById('detail-course').textContent = data.stream || data.description || '';
+                document.getElementById('detail-batch').textContent = data.subject ? ` â€¢ ${data.subject}` : '';
+                document.getElementById('detail-department').textContent = type === 'teachers' ? ' â€¢ Faculty' : ' â€¢ Student';
+                
+                // Bio
+                const bioEl = document.getElementById('detail-bio');
+                if (data.talentDesc) {
+                    bioEl.innerHTML = `<p>${escapeHTML(data.talentDesc)}</p>`;
+                } else if (data.description) {
+                    bioEl.innerHTML = `<p>${escapeHTML(data.description)}</p>`;
+                } else {
+                    bioEl.innerHTML = '<p>No biography available yet.</p>';
+                }
+
+                // Skills
+                if (data.talentCategory && data.talentCategory !== 'none') {
+                    document.getElementById('skills-section').style.display = 'block';
+                    document.getElementById('detail-skills').innerHTML = `<span class="skill-tag">${escapeHTML(data.talentCategory)}</span>`;
+                }
+
+                // Show content
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('profile-content').style.display = 'grid';
+                document.title = `${data.name} | Ravenshaw Community`;
+
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('error-state').style.display = 'block';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProfile);
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .scale-in, .reveal-up');
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+
+</html>

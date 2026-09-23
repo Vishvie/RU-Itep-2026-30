@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batchmates | Ravenshaw University ITEP</title>
+    <meta name="description" content="Meet the students of the Ravenshaw University Integrated B.Ed Batch 2026-2030.">
+    <meta property="og:title" content="Batchmates | Ravenshaw University ITEP">
+    <meta property="og:description" content="Meet the students of the Ravenshaw University Integrated B.Ed Batch 2026-2030.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FFFFFF">
+
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/navbar.css">
+    <link rel="stylesheet" href="assets/css/profiles.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/batchmates.css">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js">
+    <link rel="modulepreload" href="assets/js/firebase-init.js">
+    <link rel="modulepreload" href="assets/js/firebase-init.js">
+</head>
+
+<body style="--nav-active-color: #7C6BFF;">
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/Ravenshaw_University_Logo.png" alt="Ravenshaw University"
+                    class="navbar-logo-img">
+                <span class="navbar-title">I.B.Ed 2026-2030</span>
+            </a>
+
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <ul class="navbar-menu" id="navbar-menu">
+                <li><a href="index.html" class="navbar-link">Home</a></li>
+                <li><a href="batchmates.html" class="navbar-link active">Batchmates</a></li>
+                <li><a href="teachers.html" class="navbar-link">Teachers</a></li>
+                <li><a href="events.html" class="navbar-link">Events</a></li>
+                <li><a href="calendar.html" class="navbar-link">Calendar</a></li>
+                <li><a href="talents.html" class="navbar-link">Talents</a></li>
+                <li><a href="contact.html" class="navbar-link-btn">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="page-header section">
+        <div class="container text-center">
+            <h1 class="page-title reveal">Our <span class="title-highlight">Batchmates</span></h1>
+            <p class="page-subtitle reveal" style="transition-delay: 0.1s; max-width: 600px; margin: 1rem auto 0;">
+                The heart of Ravenshaw. A group of diverse individuals united by shared experiences and a common goal.
+            </p>
+        </div>
+    </header>
+
+    <!-- Filters & Search -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="stream-filters-container reveal" style="transition-delay: 0.2s;">
+                <div class="search-input-wrapper">
+                    <ion-icon name="search-outline"></ion-icon>
+                    <input type="text" id="search-input" class="custom-search-input"
+                        placeholder="Search batchmates by name or description...">
+                </div>
+
+                <div class="filters-group">
+                    <div class="stream-tabs-wrapper">
+                        <button class="stream-btn active" data-stream="All">
+                            <span>All Streams</span>
+                            <span class="stream-count" id="count-all">0</span>
+                        </button>
+                        <button class="stream-btn" data-stream="B.A B.Ed">
+                            <span>🎨 B.A B.Ed</span>
+                            <span class="stream-count" id="count-ba">0</span>
+                        </button>
+                        <button class="stream-btn" data-stream="B.Sc B.Ed">
+                            <span>🔬 B.Sc B.Ed</span>
+                            <span class="stream-count" id="count-bsc">0</span>
+                        </button>
+                    </div>
+                    <div class="subject-dropdown-wrapper">
+                        <button class="subject-btn" id="subject-dropdown-toggle">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="font-size: 1rem;">🎓</span>
+                                <span id="selected-subject-label">All Subjects</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <span class="subject-badge" id="subject-count-badge">0 Subjects</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    style="height: 1rem; width: 1rem; transition: transform 0.3s; opacity: 0.6;"
+                                    id="subject-dropdown-icon">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </button>
+                        <div class="subject-dropdown-menu" id="subject-dropdown-menu">
+                            <button class="subject-option active" data-subject="All">All Subjects</button>
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profiles Grid -->
+    <section class="profiles-section section" style="padding-top: 2rem; min-height: 70vh;">
+        <div class="container">
+            <div class="profiles-grid" id="profiles-grid">
+                <!-- Add Card (Admin) - Hardcoded to prevent layout shift -->
+                <div class="add-card admin-only-card animate-in" onclick="openAddStudentModal()" style="box-shadow: none;">
+                    <div class="add-card-content">
+                        <ion-icon name="add-circle" class="add-card-icon"></ion-icon>
+                        <span class="add-card-text">Add New Student</span>
+                        <span class="add-card-subtext">Click to create a new profile</span>
+                    </div>
+                </div>
+                
+                <!-- Exact Skeletons while loading -->
+                <div class="profile-card" style="box-shadow: none; pointer-events: none;">
+                    <div class="profile-card-inner">
+                        <div class="profile-card-front" style="border: 1px solid var(--border-color);">
+                            <div class="profile-top-box skeleton" style="background: var(--bg-secondary); border: none;">
+                                <div class="profile-badge skeleton" style="color: transparent; width: 80px; border: none; box-shadow: none; background: rgba(255,255,255,0.5);">&nbsp;</div>
+                                <div class="profile-image-wrapper skeleton" style="border-radius: 8px; border: 4px solid var(--bg-secondary);"></div>
+                                <div class="profile-top-content">
+                                    <h3 class="profile-name skeleton" style="color: transparent; width: 60%; margin-bottom: 0.5rem; border-radius: 4px;">&nbsp;</h3>
+                                    <p class="profile-stream-text skeleton" style="color: transparent; width: 40%; border-radius: 4px;">&nbsp;</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-card" style="box-shadow: none; pointer-events: none;">
+                    <div class="profile-card-inner">
+                        <div class="profile-card-front" style="border: 1px solid var(--border-color);">
+                            <div class="profile-top-box skeleton" style="background: var(--bg-secondary); border: none;">
+                                <div class="profile-badge skeleton" style="color: transparent; width: 80px; border: none; box-shadow: none; background: rgba(255,255,255,0.5);">&nbsp;</div>
+                                <div class="profile-image-wrapper skeleton" style="border-radius: 8px; border: 4px solid var(--bg-secondary);"></div>
+                                <div class="profile-top-content">
+                                    <h3 class="profile-name skeleton" style="color: transparent; width: 60%; margin-bottom: 0.5rem; border-radius: 4px;">&nbsp;</h3>
+                                    <p class="profile-stream-text skeleton" style="color: transparent; width: 40%; border-radius: 4px;">&nbsp;</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-card" style="box-shadow: none; pointer-events: none;">
+                    <div class="profile-card-inner">
+                        <div class="profile-card-front" style="border: 1px solid var(--border-color);">
+                            <div class="profile-top-box skeleton" style="background: var(--bg-secondary); border: none;">
+                                <div class="profile-badge skeleton" style="color: transparent; width: 80px; border: none; box-shadow: none; background: rgba(255,255,255,0.5);">&nbsp;</div>
+                                <div class="profile-image-wrapper skeleton" style="border-radius: 8px; border: 4px solid var(--bg-secondary);"></div>
+                                <div class="profile-top-content">
+                                    <h3 class="profile-name skeleton" style="color: transparent; width: 60%; margin-bottom: 0.5rem; border-radius: 4px;">&nbsp;</h3>
+                                    <p class="profile-stream-text skeleton" style="color: transparent; width: 40%; border-radius: 4px;">&nbsp;</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="no-results" class="empty-state" style="display: none;">
+                <h3>No profiles found</h3>
+                <p>Try adjusting your search or filters.</p>
+            </div>
+
+            <div class="load-more-container">
+                <button id="load-more-btn" class="btn btn-secondary" style="display: none;">Load More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div style="line-height: 1.4; display: flex; flex-direction: column; gap: 0.3rem;"><p style="margin: 0;">INTEGRATED B.ED BATCH 2026-2030</p><p style="margin: 0; font-size: 0.85em; opacity: 0.8;">RAVENSHAW UNIVERSITY</p></div>
+                <div id="admin-auth-container" style="margin-top: 5px;">
+                    <a href="login.html" id="admin-login-link"
+                        style="color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: none; opacity: 0.7; transition: opacity 0.3s;"
+                        onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Admin Login</a>
+                    <button id="admin-logout-btn"
+                        style="display: none; background: none; border: none; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: underline; opacity: 0.7; transition: opacity 0.3s; cursor: pointer; padding: 0;"
+                        onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">Admin Logout</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Modal -->
+    <div class="admin-modal-overlay" id="add-student-modal">
+        <div class="admin-modal">
+            <div class="admin-modal-header">
+                <h3 id="student-modal-title">Add New Student</h3>
+                <button class="btn-close" id="close-student-modal"><ion-icon name="close"></ion-icon></button>
+            </div>
+            <div class="admin-modal-body">
+                <div>
+                    <div id="student-msg" class="success-message"></div>
+                    <form id="student-form">
+                        <div class="form-group">
+                            <label for="student-name">Full Name</label>
+                            <input type="text" id="student-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="student-gender">Gender</label>
+                            <select id="student-gender" class="filter-select"
+                                style="width: 100%; border-radius: 4px; padding: 0.75rem;" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="student-dob">Date of Birth</label>
+                            <input type="date" id="student-dob" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="student-image">Image URL (Google Drive link or any direct link)</label>
+                            <input type="url" id="student-image" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="student-stream">Stream</label>
+                            <select id="student-stream" class="filter-select"
+                                style="width: 100%; border-radius: 4px; padding: 0.75rem;" required>
+                                <option value="">Select Stream</option>
+                                <option value="B.A B.Ed">B.A B.Ed</option>
+                                <option value="B.Sc B.Ed">B.Sc B.Ed</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="student-subject">Subject</label>
+                            <select id="student-subject" class="filter-select"
+                                style="width: 100%; border-radius: 4px; padding: 0.75rem;" required disabled>
+                                <option value="">Select Subject</option>
+                                <!-- Options will be populated by JS -->
+                            </select>
+                        </div>
+
+                        <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+                        <div class="form-group">
+                            <label for="student-talent-category">Talent Category</label>
+                            <select id="student-talent-category" class="filter-select"
+                                style="width: 100%; border-radius: 4px; padding: 0.75rem;">
+                                <option value="none">None of the above</option>
+                                <option value="academic">Academic Support</option>
+                                <option value="art">Art & Design</option>
+                                <option value="events">Events & Hosting</option>
+                                <option value="media">Media & Photography</option>
+                                <option value="performing">Performing Arts</option>
+                                <option value="social">Social Service</option>
+                                <option value="speaking">Public Speaking</option>
+                                <option value="sports">Sports & Wellness</option>
+                                <option value="writing">Writing & Literature</option>
+                            </select>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+            <div class="admin-modal-footer">
+                <button type="submit" class="btn-primary" id="student-submit" form="student-form" style="width: 100%; max-width: 300px;">Save Student</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="assets/js/navbar.js"></script>
+    <script type="module" src="assets/js/auth.js"></script>
+
+    <script type="module">
+        import { db, auth, onAuthStateChanged, collection, getDocs, orderBy, query, limit, startAfter, where, addDoc, doc, deleteDoc, updateDoc, escapeHTML } from './assets/js/firebase-init.js';
+
+        let editingStudentId = null;
+        let lastVisibleStudent = null;
+        const studentsPerPage = 12;
+        let allStudents = [];
+        let isDataLoaded = false;
+        let currentStreamFilter = 'All';
+        let currentSubjectFilter = 'All';
+        let currentSearchTerm = '';
+
+        // Listen for auth state to re-render if needed
+        onAuthStateChanged(auth, (user) => {
+            window.isAdmin = !!user;
+            if (isDataLoaded) renderStudents();
+        });
+
+        // Modal Logic
+        const modal = document.getElementById('add-student-modal');
+        document.getElementById('close-student-modal').addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        window.openAddStudentModal = () => {
+            editingStudentId = null;
+            document.getElementById('student-modal-title').textContent = 'Add New Student';
+            studentBtn.textContent = 'Save Student';
+            document.getElementById('student-form').reset();
+
+
+
+            modal.classList.add('active');
+            document.getElementById('student-msg').style.display = 'none';
+        };
+
+        // Form Submit
+        const studentForm = document.getElementById('student-form');
+        const studentBtn = document.getElementById('student-submit');
+        const studentMsg = document.getElementById('student-msg');
+
+
+        // Stream and Subject logic
+        const iStream = document.getElementById('student-stream');
+        const iSubject = document.getElementById('student-subject');
+
+        const subjectsByStream = {
+            "B.A B.Ed": ["History", "Geography", "English", "Odia", "Political Science", "Economics"],
+            "B.Sc B.Ed": ["Physics", "Chemistry", "Mathematics", "Botany", "Zoology"]
+        };
+
+
+
+        iStream.addEventListener('change', () => {
+            const stream = iStream.value;
+            iSubject.innerHTML = '<option value="">Select Subject</option>'; // reset
+            if (stream && subjectsByStream[stream]) {
+                subjectsByStream[stream].forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub;
+                    option.textContent = sub;
+                    iSubject.appendChild(option);
+                });
+                iSubject.disabled = false;
+            } else {
+                iSubject.disabled = true;
+            }
+
+        });
+
+
+
+        // Convert Google Drive view links to direct image links
+        function formatImageUrl(url) {
+            if (url.includes('drive.google.com')) {
+                const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                }
+            }
+            return url;
+        }
+
+        studentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            studentBtn.disabled = true;
+            studentBtn.textContent = 'Saving...';
+            studentMsg.style.display = 'none';
+
+            try {
+                let imageUrl = formatImageUrl(document.getElementById('student-image').value);
+                const dobVal = document.getElementById('student-dob').value;
+                let birthMonth = null;
+                if (dobVal) {
+                    birthMonth = parseInt(dobVal.split('-')[1], 10);
+                }
+
+                const studentData = {
+                    name: document.getElementById('student-name').value,
+                    gender: document.getElementById('student-gender').value,
+                    dob: dobVal,
+                    birthMonth: birthMonth,
+                    image: imageUrl,
+                    stream: iStream.value,
+                    subject: iSubject.value,
+                    talentCategory: document.getElementById('student-talent-category').value
+                };
+
+                if (editingStudentId) {
+                    await updateDoc(doc(db, "students", editingStudentId), studentData);
+                    studentMsg.textContent = 'Student updated successfully!';
+                } else {
+                    studentData.createdAt = new Date().toISOString();
+                    await addDoc(collection(db, "students"), studentData);
+                    studentMsg.textContent = 'Student added successfully!';
+                }
+
+                studentMsg.style.display = 'block';
+                studentForm.reset();
+                setTimeout(() => modal.classList.remove('active'), 1000);
+                fetchStudents();
+            } catch (error) {
+                alert("Error adding document: " + error.message);
+            } finally {
+                studentBtn.disabled = false;
+                studentBtn.textContent = editingStudentId ? 'Update Student' : 'Save Student';
+            }
+        });
+
+        // Edit Logic
+        window.editStudent = (id) => {
+            const student = allStudents.find(s => s.id === id);
+            if (!student) return;
+
+            editingStudentId = id;
+            document.getElementById('student-modal-title').textContent = 'Edit Student';
+            studentBtn.textContent = 'Update Student';
+
+            // Populate form
+            document.getElementById('student-name').value = student.name || '';
+            document.getElementById('student-gender').value = student.gender || '';
+            document.getElementById('student-dob').value = student.dob || '';
+            document.getElementById('student-image').value = student.image || '';
+            document.getElementById('student-stream').value = student.stream || '';
+
+            // Trigger stream change to populate subjects
+            document.getElementById('student-stream').dispatchEvent(new Event('change'));
+
+            if (student.subject) {
+                document.getElementById('student-subject').value = student.subject;
+            }
+            if (student.talentCategory) {
+                document.getElementById('student-talent-category').value = student.talentCategory;
+            }
+
+            // Trigger input events to update live preview
+            document.getElementById('student-name').dispatchEvent(new Event('input'));
+            document.getElementById('student-image').dispatchEvent(new Event('input'));
+            document.getElementById('student-gender').dispatchEvent(new Event('change'));
+            document.getElementById('student-subject').dispatchEvent(new Event('change'));
+
+            // document.querySelector('.preview-stage-title').textContent = 'Edit Preview';
+
+            modal.classList.add('active');
+            document.getElementById('student-msg').style.display = 'none';
+        };
+
+        // Delete Logic
+        window.deleteStudent = async (id) => {
+            if (confirm("Are you sure you want to delete this student?")) {
+                try {
+                    await deleteDoc(doc(db, "students", id));
+                    fetchStudents();
+                } catch (e) {
+                    alert("Error deleting: " + e.message);
+                }
+            }
+        };
+
+        window.shareProfile = (name, stream, subject) => {
+            const text = `Check out ${name}'s profile from ${stream} ${subject && subject !== 'undefined' ? 'â€¢ ' + subject : ''} at Ravenshaw ITEP!`;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Ravenshaw Batchmate',
+                    text: text,
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(text + " " + window.location.href);
+                alert("Profile info copied to clipboard!");
+            }
+        };
+
+        async function fetchStudents(loadMore = false) {
+            const grid = document.getElementById('profiles-grid');
+            const loadMoreBtn = document.getElementById('load-more-btn');
+
+            try {
+                let constraints = [];
+                if (currentStreamFilter !== 'All') constraints.push(where("stream", "==", currentStreamFilter));
+                if (currentSubjectFilter !== 'All') constraints.push(where("subject", "==", currentSubjectFilter));
+                
+                // If searching by name locally, we fetch more or we can't easily paginate full-text search in Firestore
+                // For simplicity, we just order by createdAt
+                constraints.push(orderBy("createdAt", "desc"));
+                constraints.push(limit(studentsPerPage));
+                
+                if (loadMore && lastVisibleStudent) {
+                    constraints.push(startAfter(lastVisibleStudent));
+                }
+                
+                const q = query(collection(db, "students"), ...constraints);
+                const querySnapshot = await getDocs(q);
+
+                if (!loadMore) {
+                    allStudents = [];
+                }
+
+                querySnapshot.forEach((docSnap) => {
+                    allStudents.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                
+                lastVisibleStudent = querySnapshot.docs[querySnapshot.docs.length - 1];
+                
+                if (querySnapshot.docs.length < studentsPerPage) {
+                    loadMoreBtn.style.display = 'none';
+                } else {
+                    loadMoreBtn.style.display = 'inline-block';
+                }
+
+                isDataLoaded = true;
+                renderStudents();
+            } catch (error) {
+                console.error("Error fetching students:", error);
+                if (error.message.includes('index')) {
+                    console.warn("Firestore index missing. Please create it via the link in the console.");
+                }
+                if(!loadMore) grid.innerHTML = '<p>Error loading students.</p>';
+            }
+        }
+        
+        document.getElementById('load-more-btn').addEventListener('click', () => fetchStudents(true));
+
+        function renderStudents() {
+            const grid = document.getElementById('profiles-grid');
+            grid.innerHTML = ''; // clear
+
+            if (window.isAdmin) {
+                grid.innerHTML += `
+                    <div class="add-card" onclick="openAddStudentModal()">
+                        <div class="add-card-content">
+                            <ion-icon name="add-circle" class="add-card-icon"></ion-icon>
+                            <span class="add-card-text">Add New Student</span>
+                            <span class="add-card-subtext">Click to create a new profile</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            let filtered = allStudents;
+            if (currentSearchTerm) {
+                const term = currentSearchTerm.toLowerCase();
+                filtered = filtered.filter(s =>
+                    s.name.toLowerCase().includes(term)
+                );
+            }
+
+            if (filtered.length === 0 && !window.isAdmin) {
+                document.getElementById('no-results').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('no-results').style.display = 'none';
+            }
+
+            filtered.forEach((data, index) => {
+                const card = document.createElement('div');
+                card.className = 'profile-card animate-in';
+                card.onclick = function () { this.classList.toggle('flipped'); };
+                card.style.position = 'relative'; // for delete button
+
+                let streamSubjectHtml = (data.stream || data.subject) ? `<div style="font-size: 0.75rem; color: var(--nav-active-color); font-weight: 700; margin-bottom: 0.25rem;">${data.stream || ''} ${data.subject ? ' - ' + data.subject : ''}</div>` : '';
+
+                // Set background color based on gender
+                let bgColor = '#E4F7FE';
+                if (data.gender === 'Male') bgColor = '#E4F7FE';
+                else if (data.gender === 'Female') bgColor = '#FFE1F2';
+
+                card.innerHTML = `
+                    <div class="profile-card-inner">
+                        <div class="profile-card-front">
+                            <div class="profile-top-box" style="background: ${bgColor};">
+                                <div class="profile-badge">Student</div>
+                                <div class="profile-image-wrapper">
+                                    <img src="${escapeHTML(data.image)}" alt="Profile" class="profile-image" onerror="this.src='assets/images/placeholder.jpg'" loading="lazy">
+                                </div>
+                                <div class="profile-top-content">
+                                    <h3 class="profile-name">${escapeHTML(data.name)}</h3>
+                                    <p class="profile-stream-text">${escapeHTML(data.stream || '')}${data.subject ? ' â€¢ ' + escapeHTML(data.subject) : ''}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="profile-card-back">
+                            
+                            ${window.isAdmin ? `
+                            <button onclick="event.stopPropagation(); editStudent('${escapeHTML(data.id)}')" style="width: 70%; max-width: 160px; border-radius: 999px; background: #e0e7ff; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: flex-start; padding: 10px 10px 10px 24px; gap: 0.75rem; color: #4338ca; font-weight: 500; font-family: var(--font-body); border: none; cursor: pointer; transition: transform 0.2s;">
+                                <ion-icon name="create-outline" style="font-size: 1.2rem;"></ion-icon> <span>Edit</span>
+                            </button>
+                            ` : ''}
+
+                            <button onclick="event.stopPropagation(); shareProfile('${escapeHTML(data.name)}', '${escapeHTML(data.stream)}', '${escapeHTML(data.subject)}')" style="width: 70%; max-width: 160px; border-radius: 999px; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: flex-start; padding: 10px 10px 10px 24px; gap: 0.75rem; background: #dcfce7; color: #15803d; font-weight: 500; font-family: var(--font-body); border: none; cursor: pointer; transition: transform 0.2s;">
+                                <ion-icon name="share-social-outline" style="font-size: 1.2rem;"></ion-icon> <span>Share</span>
+                            </button>
+                            
+                            ${window.isAdmin ? `
+                            <button onclick="event.stopPropagation(); deleteStudent('${escapeHTML(data.id)}')" style="width: 70%; max-width: 160px; border-radius: 999px; background: #fee2e2; display: flex; align-items: center; justify-content: flex-start; padding: 10px 10px 10px 24px; gap: 0.75rem; color: #b91c1c; font-weight: 500; font-family: var(--font-body); border: none; cursor: pointer; transition: transform 0.2s;">
+                                <ion-icon name="trash-outline" style="font-size: 1.2rem;"></ion-icon> <span>Delete</span>
+                            </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // UI Event Listeners for Filters
+        const streamBtns = document.querySelectorAll('.stream-btn');
+        const subjectToggle = document.getElementById('subject-dropdown-toggle');
+        const subjectMenu = document.getElementById('subject-dropdown-menu');
+        const subjectLabel = document.getElementById('selected-subject-label');
+        const subjectCountBadge = document.getElementById('subject-count-badge');
+        const subjectIcon = document.getElementById('subject-dropdown-icon');
+
+        streamBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active state
+                streamBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                currentStreamFilter = btn.getAttribute('data-stream');
+
+                // Update Subject Options based on Stream
+                let availableSubjects = [];
+                if (currentStreamFilter === 'All') {
+                    availableSubjects = [...(subjectsByStream["B.A B.Ed"] || []), ...(subjectsByStream["B.Sc B.Ed"] || [])];
+                } else {
+                    availableSubjects = subjectsByStream[currentStreamFilter] || [];
+                }
+
+                // Deduplicate
+                availableSubjects = [...new Set(availableSubjects)];
+
+                // Rebuild Menu
+                subjectMenu.innerHTML = '<button class="subject-option active" data-subject="All">All Subjects</button>';
+                availableSubjects.forEach(sub => {
+                    subjectMenu.innerHTML += `<button class="subject-option" data-subject="${sub}">${sub}</button>`;
+                });
+
+                subjectCountBadge.textContent = availableSubjects.length + ' Subjects';
+
+                // Reset subject filter when stream changes
+                currentSubjectFilter = 'All';
+                subjectLabel.textContent = 'All Subjects';
+
+                bindSubjectOptions();
+                fetchStudents(false);
+            });
+        });
+
+        subjectToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            subjectMenu.classList.toggle('active');
+            if (subjectMenu.classList.contains('active')) {
+                subjectIcon.style.transform = 'rotate(180deg)';
+            } else {
+                subjectIcon.style.transform = 'rotate(0deg)';
+            }
+        });
+
+        document.addEventListener('click', () => {
+            subjectMenu.classList.remove('active');
+            subjectIcon.style.transform = 'rotate(0deg)';
+        });
+
+        function bindSubjectOptions() {
+            const options = subjectMenu.querySelectorAll('.subject-option');
+            options.forEach(opt => {
+                opt.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    options.forEach(o => o.classList.remove('active'));
+                    opt.classList.add('active');
+
+                    currentSubjectFilter = opt.getAttribute('data-subject');
+                    subjectLabel.textContent = currentSubjectFilter === 'All' ? 'Subject: All Subjects' : currentSubjectFilter;
+
+                    subjectMenu.classList.remove('active');
+                    subjectIcon.style.transform = 'rotate(0deg)';
+                    fetchStudents(false);
+                });
+            });
+        }
+
+        // Initial setup for subjects
+        bindSubjectOptions();
+        setTimeout(() => {
+            let initialSubjects = [...(subjectsByStream["B.A B.Ed"] || []), ...(subjectsByStream["B.Sc B.Ed"] || [])];
+            subjectCountBadge.textContent = new Set(initialSubjects).size + ' Subjects';
+
+            // Rebuild Menu
+            subjectMenu.innerHTML = '<button class="subject-option active" data-subject="All">All Subjects</button>';
+            new Set(initialSubjects).forEach(sub => {
+                subjectMenu.innerHTML += `<button class="subject-option" data-subject="${sub}">${sub}</button>`;
+            });
+            bindSubjectOptions();
+        }, 100);
+
+        // Search Bar Event Listener
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                currentSearchTerm = e.target.value;
+                renderStudents();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => fetchStudents(false));
+    </script>
+
+    <script>
+        // Reveal Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .scale-in');
+            revealElements.forEach(el => observer.observe(el));
+        });
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

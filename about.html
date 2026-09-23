@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Ravenshaw University ITEP</title>
+    <meta name="description" content="Learn more about the Ravenshaw University Integrated B.Ed program, our vision, and the student community.">
+    <meta property="og:title" content="About Us | Ravenshaw University ITEP">
+    <meta property="og:description" content="Learn more about the Ravenshaw University Integrated B.Ed program, our vision, and the student community.">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#FFFFFF">
+
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/navbar.css">
+    <style>
+        .about-header {
+            padding: 8rem 0 4rem;
+            text-align: center;
+            background: var(--bg-secondary);
+        }
+
+        .about-title {
+            font-size: clamp(3rem, 6vw, 5rem);
+            color: var(--nav-active-color);
+            margin-bottom: 1rem;
+        }
+
+        .about-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .about-content p {
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .about-content h2 {
+            font-size: 2rem;
+            margin: 3rem 0 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .university-logo-large {
+            max-width: 200px;
+            margin: 0 auto 3rem;
+            display: block;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s ease;
+        }
+
+        .university-logo-large.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js">
+    <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js">
+    <link rel="modulepreload" href="assets/js/firebase-init.js">
+</head>
+
+<body style="--nav-active-color: #5BE2FF;">
+
+    <nav class="navbar" id="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <img src="assets/images/Ravenshaw_University_Logo.png" alt="Ravenshaw University" class="navbar-logo-img">
+                <span class="navbar-title">I.B.Ed 2026-2030</span>
+            </a>
+
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <ul class="navbar-menu" id="navbar-menu">
+                <li><a href="index.html" class="navbar-link">Home</a></li>
+                <li><a href="batchmates.html" class="navbar-link">Batchmates</a></li>
+                <li><a href="teachers.html" class="navbar-link">Teachers</a></li>
+                <li><a href="events.html" class="navbar-link">Events</a></li>
+                <li><a href="calendar.html" class="navbar-link">Calendar</a></li>
+                <li><a href="talents.html" class="navbar-link">Talents</a></li>
+                <li><a href="contact.html" class="navbar-link-btn">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-header section">
+        <img src="https://upload.wikimedia.org/wikipedia/en/0/09/Ravenshaw_University_Logo.png" alt="University"
+            class="university-logo-large" id="big-logo">
+        <h1 class="about-title reveal" id="page-title">About Our Community</h1>
+        <p class="about-subtitle reveal" style="transition-delay: 0.1s" id="page-subtitle">A legacy of learning, a
+            future of possibilities.</p>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <div class="about-content reveal" style="transition-delay: 0.2s;" id="about-text-container">
+                <h2>Our Story</h2>
+                <p>The Integrated B.Ed programme at Ravenshaw University, Cuttack, is one of the most prestigious teacher education courses in Odisha. Our batch of 2026-2030 brings together a diverse group of aspiring educators, each with unique strengths and perspectives, united by a shared passion for shaping the future of education.</p>
+
+                <h2>Our Mission</h2>
+                <p>We believe that teachers are the architects of society. Our mission is to develop competent, compassionate, and innovative educators who can inspire the next generation. Through rigorous academic training and practical experience, we are preparing ourselves to make a lasting impact in classrooms across the country.</p>
+
+                <h2>Ravenshaw University</h2>
+                <p>Established in 1868, Ravenshaw University is one of the oldest and most distinguished universities in Eastern India. Located in the historic city of Cuttack, it has been a beacon of learning for over 150 years, producing some of Odisha's most celebrated leaders, thinkers, and educators.</p>
+
+                <h2>This Website</h2>
+                <p>This community website was built to preserve and celebrate our journey together. It serves as a digital yearbook, event archive, and connection hub for all batchmates and faculty. Here you can browse student and teacher profiles, revisit event memories, discover the talents within our batch, and stay connected long after we graduate.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div style="line-height: 1.4; display: flex; flex-direction: column; gap: 0.3rem;"><p style="margin: 0;">INTEGRATED B.ED BATCH 2026-2030</p><p style="margin: 0; font-size: 0.85em; opacity: 0.8;">RAVENSHAW UNIVERSITY</p></div>
+                <div id="admin-auth-container" style="margin-top: 5px;">
+                    <a href="login.html" id="admin-login-link" style="color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: none; opacity: 0.7;">Admin Login</a>
+                    <button id="admin-logout-btn" style="display: none; background: none; border: none; color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; text-decoration: underline; opacity: 0.7; cursor: pointer; padding: 0;">Admin Logout</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => document.getElementById('big-logo').classList.add('active'), 100);
+        });
+    </script>
+
+    <script>
+        // Navbar scroll logic & Mobile menu
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            if (currentScroll > 80 && currentScroll > lastScroll && !document.getElementById('navbar-menu').classList.contains('active')) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+            if (currentScroll > 0) {
+                navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.05)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+            lastScroll = currentScroll;
+        });
+
+        const hamburger = document.getElementById('hamburger');
+        const menu = document.getElementById('navbar-menu');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            menu.classList.toggle('active');
+
+            if (menu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>
