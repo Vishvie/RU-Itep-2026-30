@@ -116,8 +116,9 @@
                 </div>
             </div>
 
-            <div id="no-results" class="empty-state" style="display: none;">
-                <h3>No teachers found</h3>
+            <div id="no-results" class="empty-state" style="display: none; text-align: center; max-width: 300px; margin: 2rem auto; cursor: default; height: 350px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <ion-icon name="search-outline" style="font-size: 4rem; color: var(--text-secondary); margin-bottom: 1rem; opacity: 0.5;"></ion-icon>
+                <h3 style="margin-bottom: 0.5rem; color: var(--text-primary); padding: 0 1rem;">No teachers found</h3>
             </div>
             
             <div class="load-more-container" style="text-align: center; margin-top: 2rem;">
@@ -351,7 +352,11 @@
                 renderTeachers();
             } catch (error) {
                 console.error("Error fetching teachers:", error);
-                if(!loadMore) grid.innerHTML = '<p>Error loading teachers.</p>';
+                if(!loadMore) {
+                    allTeachers = [];
+                    isDataLoaded = true;
+                    renderTeachers();
+                }
             }
         }
         
@@ -375,7 +380,7 @@
             }
 
             if (teachers.length === 0 && !window.isAdmin) {
-                document.getElementById('no-results').style.display = 'block';
+                document.getElementById('no-results').style.display = 'flex';
                 return;
             } else {
                 document.getElementById('no-results').style.display = 'none';

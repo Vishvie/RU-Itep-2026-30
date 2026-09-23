@@ -70,6 +70,7 @@
     flex-direction: column;
     box-shadow: 10px 10px 0 var(--shadow);
     transform: rotate(-1.2deg);
+    height: 350px;
 }
 
 .talent-img {

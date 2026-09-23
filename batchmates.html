@@ -172,9 +172,10 @@
                 </div>
             </div>
 
-            <div id="no-results" class="empty-state" style="display: none;">
-                <h3>No profiles found</h3>
-                <p>Try adjusting your search or filters.</p>
+            <div id="no-results" class="empty-state" style="display: none; text-align: center; max-width: 300px; margin: 2rem auto; cursor: default; height: 350px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <ion-icon name="search-outline" style="font-size: 4rem; color: var(--text-secondary); margin-bottom: 1rem; opacity: 0.5;"></ion-icon>
+                <h3 style="margin-bottom: 0.5rem; color: var(--text-primary);">No profiles found</h3>
+                <p style="color: var(--text-secondary); padding: 0 1rem;">Try adjusting your search or filters.</p>
             </div>
 
             <div class="load-more-container">
@@ -522,7 +523,11 @@
                 if (error.message.includes('index')) {
                     console.warn("Firestore index missing. Please create it via the link in the console.");
                 }
-                if(!loadMore) grid.innerHTML = '<p>Error loading students.</p>';
+                if(!loadMore) {
+                    allStudents = [];
+                    isDataLoaded = true;
+                    renderStudents();
+                }
             }
         }
         
@@ -553,7 +558,7 @@
             }
 
             if (filtered.length === 0 && !window.isAdmin) {
-                document.getElementById('no-results').style.display = 'block';
+                document.getElementById('no-results').style.display = 'flex';
                 return;
             } else {
                 document.getElementById('no-results').style.display = 'none';
@@ -678,7 +683,7 @@
                     opt.classList.add('active');
 
                     currentSubjectFilter = opt.getAttribute('data-subject');
-                    subjectLabel.textContent = currentSubjectFilter === 'All' ? 'Subject: All Subjects' : currentSubjectFilter;
+                    subjectLabel.textContent = currentSubjectFilter === 'All' ? 'All Subjects' : currentSubjectFilter;
 
                     subjectMenu.classList.remove('active');
                     subjectIcon.style.transform = 'rotate(0deg)';
