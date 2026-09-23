@@ -1,0 +1,395 @@
+/* global.css - Foundation for the Supercell Store design system */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Colors - Minimalist Editorial Theme */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #FAFAFA;
+  --bg-tertiary: #FFFFFF;
+
+  --text-primary: #1A1A1A;
+  --text-secondary: #292929;
+
+  --accent: #1A1A1A;
+  /* Black Accent */
+  --accent-light: #333333;
+  --accent-secondary: #000000;
+
+  --border-color: #E5E7EB;
+
+  /* Typography */
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Poppins', sans-serif;
+
+  /* Layout */
+  --container-width: 1280px;
+  --container-padding: 2rem;
+  --nav-height: 80px;
+
+  /* Animation timings - focus on smooth, elegant momentum */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --transition-fast: 0.25s var(--ease-out);
+  --transition-normal: 0.5s var(--ease-out);
+  --transition-slow: 0.9s var(--ease-spring);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --container-padding: 1rem;
+  }
+}
+
+/* Reset & Box Sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* Typography elements */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  /* Semi-bold */
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+p {
+  color: var(--text-secondary);
+  font-weight: 500;
+  /* Medium */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+
+/* Layout Utilities */
+.container {
+  width: 100%;
+  padding: 0 var(--container-padding);
+}
+
+.section {
+  padding: 6rem 0;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 3rem 0;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+}
+
+/* UI Elements */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.btn:active {
+  transform: translateY(2px);
+}
+
+.btn-primary {
+  background: var(--text-primary);
+  color: #ffffff !important;
+  border-color: var(--text-primary);
+}
+
+.btn-secondary {
+  background-color: var(--bg-primary);
+  color: var(--text-primary) !important;
+}
+
+/* Supercell Stroke Utility (Removed Stroke) */
+.supercell-text {
+  font-family: var(--font-heading);
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+  font-weight: 600;
+}
+
+/* Removed glass utility */
+
+/* Image Handling */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Icon Alignment */
+ion-icon {
+  font-size: 1.2em;
+  vertical-align: -0.15em;
+  margin-right: 0.25rem;
+}
+
+/* Smooth reveal animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all var(--transition-slow);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-up {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: revealUp 0.8s ease forwards;
+}
+
+@keyframes revealUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-header,
+.page-header.section {
+  padding-bottom: 2rem;
+  padding-top: calc(var(--nav-height) + 4rem);
+}
+
+.page-title {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.title-highlight {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+.title-highlight::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: -4px;
+  right: -6px;
+  bottom: 5%;
+  background: #5be2ff;
+  /* Theme Cyan, no yellow */
+  opacity: 0.5;
+  z-index: -1;
+  transform: skewX(-15deg) rotate(-2deg);
+  /* Tilted */
+  border-radius: 0;
+  /* Non-rounded */
+  mix-blend-mode: multiply;
+  /* Realistic natural blending */
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: all var(--transition-slow);
+}
+
+.reveal-left.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(60px);
+  transition: all var(--transition-slow);
+}
+
+.reveal-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scale-in {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: all var(--transition-slow);
+}
+
+.scale-in.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite linear;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Responsive constraints */
+@media (max-width: 768px) {
+  :root {
+    --container-padding: 1.5rem;
+  }
+
+  .section {
+    padding: 4rem 0;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .title-highlight {
+    padding: 0 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --container-padding: 1rem;
+  }
+
+  .section {
+    padding: 3rem 0;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+  }
+}
+
+/* Footer (Global) */
+.footer {
+  padding: 3rem 0;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  margin-top: auto;
+  /* Pushes the footer to the bottom of the flex body */
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.footer p {
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.footer-links a {
+  font-size: clamp(0.6rem, 2vw, 0.85rem);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  #admin-auth-container {
+    font-size: 0.75rem;
+  }
+}
+
+.admin-only-card {
+  display: none;
+}
+
+.is-admin .admin-only-card {
+  display: flex;
+}
