@@ -254,12 +254,13 @@ html:not(.is-admin) .admin-only-card {
 
 /* Keep login card styles */
 .login-section {
-    min-height: 80vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     background: #f8f9fa;
     padding: clamp(1rem, 3vw, 2rem);
+    padding-top: calc(var(--nav-height, 80px) + 2rem);
 }
 
 .login-card {
