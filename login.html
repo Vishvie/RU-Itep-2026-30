@@ -26,32 +26,27 @@
                 <img src="assets/images/Ravenshaw_University_Logo.png" alt="Ravenshaw University" class="navbar-logo-img">
                 <span class="navbar-title">I.B.Ed 2026-2030</span>
             </a>
-            <button class="hamburger" id="hamburger" aria-label="Menu">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
-            <ul class="navbar-menu" id="navbar-menu">
-                <li><a href="index.html" class="navbar-link">Home</a></li>
-            </ul>
+            <a href="index.html" aria-label="Home" style="color: var(--text-primary); font-size: 2.2rem; display: flex; align-items: center; justify-content: center; text-decoration: none; padding: 0.5rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                <ion-icon name="close-outline"></ion-icon>
+            </a>
         </div>
     </nav>
 
     <section class="login-section">
         <div class="login-card">
             <h2>Admin Login</h2>
-            <p>Sign in to manage students and events</p>
+            <p>Verify credentials to manage students, teachers and events...</p>
             
             <div id="login-error" class="error-message"></div>
 
             <form id="login-form">
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" required placeholder="admin@example.com">
+                    <input type="email" id="email" required placeholder="">
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" required placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
+                    <input type="password" id="password" required placeholder="">
                 </div>
                 <button type="submit" class="btn-primary" id="login-btn">Secure Login</button>
             </form>
@@ -59,14 +54,7 @@
     </section>
 
     <!-- Scripts -->
-    <script>
-        const hamburger = document.getElementById('hamburger');
-        const menu = document.getElementById('navbar-menu');
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            menu.classList.toggle('active');
-        });
-    </script>
+    <!-- Scripts -->
 
     <script type="module">
         import { auth, signInWithEmailAndPassword, onAuthStateChanged } from './assets/js/firebase-init.js';
