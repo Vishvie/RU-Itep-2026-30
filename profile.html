@@ -181,8 +181,8 @@
                 document.getElementById('detail-image').src = data.image || 'assets/images/placeholder.jpg';
                 document.getElementById('detail-image').onerror = function() { this.src = 'assets/images/placeholder.jpg'; };
                 document.getElementById('detail-course').textContent = data.stream || data.description || '';
-                document.getElementById('detail-batch').textContent = data.subject ? ` â€¢ ${data.subject}` : '';
-                document.getElementById('detail-department').textContent = type === 'teachers' ? ' â€¢ Faculty' : ' â€¢ Student';
+                document.getElementById('detail-batch').textContent = data.subject ? ` - ${data.subject}` : '';
+                document.getElementById('detail-department').textContent = type === 'teachers' ? ' - Faculty' : ' - Student';
                 
                 // Bio
                 const bioEl = document.getElementById('detail-bio');

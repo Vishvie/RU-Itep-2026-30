@@ -61,54 +61,53 @@
 
     <section class="profiles-section section" style="padding-top: 0;">
         <div class="container">
-            <div class="profiles-grid" id="teachers-grid">
-                <!-- Add Card (Admin) - Hardcoded to prevent layout shift -->
-                <div class="add-card admin-only-card animate-in" onclick="openAddTeacherModal()" style="box-shadow: none;">
-                    <div class="add-card-content">
-                        <ion-icon name="add-circle" class="add-card-icon"></ion-icon>
-                        <span class="add-card-text">Add New Teacher</span>
-                        <span class="add-card-subtext">Click to create a new profile</span>
+            <div style="position: relative; min-height: 400px;">
+                <div class="profiles-grid" id="teachers-grid">
+                    <!-- Add Card (Admin) - Hardcoded to prevent layout shift -->
+                    <div class="add-card admin-only-card animate-in" onclick="openAddTeacherModal()" style="box-shadow: none;">
+                        <div class="add-card-content">
+                            <ion-icon name="add-circle" class="add-card-icon"></ion-icon>
+                            <span class="add-card-text">Add New Teacher</span>
+                            <span class="add-card-subtext">Click to create a new profile</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Teacher Skeletons -->
-                <div class="profile-card" style="box-shadow: none; pointer-events: none;">
-                    <div class="profile-card-inner">
-                        <div class="profile-card-front" style="border: 1px solid var(--border-color);">
-                            <div class="profile-top-box skeleton" style="background: var(--bg-secondary); border: none;">
-                                <div class="profile-badge skeleton" style="color: transparent; width: 80px; border: none; box-shadow: none; background: rgba(255,255,255,0.5);">&nbsp;</div>
-                                <div class="profile-image-wrapper skeleton" style="border-radius: 8px; border: 4px solid var(--bg-secondary);"></div>
-                                <div class="profile-top-content">
-                                    <h3 class="profile-name skeleton" style="color: transparent; width: 60%; margin-bottom: 0.5rem; border-radius: 4px;">&nbsp;</h3>
-                                    <p class="profile-stream-text skeleton" style="color: transparent; width: 40%; border-radius: 4px;">&nbsp;</p>
+                <div class="profiles-grid" id="teachers-skeletons" style="position: absolute; top: 0; left: 0; width: 100%; pointer-events: none; z-index: 10; transition: opacity 0.5s ease;">
+                    <div class="add-card admin-only-card" style="box-shadow: none; visibility: hidden;"></div>
+                    <!-- Teacher Skeletons -->
+                    <div class="profile-card" style="box-shadow: none; pointer-events: none;">
+                        <div class="profile-card-inner">
+                            <div class="profile-card-front skeleton" style="background: var(--bg-secondary); border: none;">
+                                <div class="card-overlay-bottom">
+                                    <div class="profile-info-bottom" style="width: 100%;">
+                                        <div class="skeleton" style="height: 1.3rem; width: 80%; background: rgba(255,255,255,0.4); border-radius: 4px; margin-bottom: 0.4rem;"></div>
+                                        <div class="skeleton" style="height: 0.85rem; width: 60%; background: rgba(255,255,255,0.3); border-radius: 4px;"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="profile-card" style="box-shadow: none; pointer-events: none;">
-                    <div class="profile-card-inner">
-                        <div class="profile-card-front" style="border: 1px solid var(--border-color);">
-                            <div class="profile-top-box skeleton" style="background: var(--bg-secondary); border: none;">
-                                <div class="profile-badge skeleton" style="color: transparent; width: 80px; border: none; box-shadow: none; background: rgba(255,255,255,0.5);">&nbsp;</div>
-                                <div class="profile-image-wrapper skeleton" style="border-radius: 8px; border: 4px solid var(--bg-secondary);"></div>
-                                <div class="profile-top-content">
-                                    <h3 class="profile-name skeleton" style="color: transparent; width: 60%; margin-bottom: 0.5rem; border-radius: 4px;">&nbsp;</h3>
-                                    <p class="profile-stream-text skeleton" style="color: transparent; width: 40%; border-radius: 4px;">&nbsp;</p>
+                    <div class="profile-card" style="box-shadow: none; pointer-events: none;">
+                        <div class="profile-card-inner">
+                            <div class="profile-card-front skeleton" style="background: var(--bg-secondary); border: none;">
+                                <div class="card-overlay-bottom">
+                                    <div class="profile-info-bottom" style="width: 100%;">
+                                        <div class="skeleton" style="height: 1.3rem; width: 80%; background: rgba(255,255,255,0.4); border-radius: 4px; margin-bottom: 0.4rem;"></div>
+                                        <div class="skeleton" style="height: 0.85rem; width: 60%; background: rgba(255,255,255,0.3); border-radius: 4px;"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="profile-card" style="box-shadow: none; pointer-events: none;">
-                    <div class="profile-card-inner">
-                        <div class="profile-card-front" style="border: 1px solid var(--border-color);">
-                            <div class="profile-top-box skeleton" style="background: var(--bg-secondary); border: none;">
-                                <div class="profile-badge skeleton" style="color: transparent; width: 80px; border: none; box-shadow: none; background: rgba(255,255,255,0.5);">&nbsp;</div>
-                                <div class="profile-image-wrapper skeleton" style="border-radius: 8px; border: 4px solid var(--bg-secondary);"></div>
-                                <div class="profile-top-content">
-                                    <h3 class="profile-name skeleton" style="color: transparent; width: 60%; margin-bottom: 0.5rem; border-radius: 4px;">&nbsp;</h3>
-                                    <p class="profile-stream-text skeleton" style="color: transparent; width: 40%; border-radius: 4px;">&nbsp;</p>
+                    <div class="profile-card" style="box-shadow: none; pointer-events: none;">
+                        <div class="profile-card-inner">
+                            <div class="profile-card-front skeleton" style="background: var(--bg-secondary); border: none;">
+                                <div class="card-overlay-bottom">
+                                    <div class="profile-info-bottom" style="width: 100%;">
+                                        <div class="skeleton" style="height: 1.3rem; width: 80%; background: rgba(255,255,255,0.4); border-radius: 4px; margin-bottom: 0.4rem;"></div>
+                                        <div class="skeleton" style="height: 0.85rem; width: 60%; background: rgba(255,255,255,0.3); border-radius: 4px;"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -116,9 +115,10 @@
                 </div>
             </div>
 
-            <div id="no-results" class="empty-state" style="display: none; text-align: center; max-width: 300px; margin: 2rem auto; cursor: default; height: 350px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div id="no-results" style="display: none; text-align: center; max-width: 300px; margin: 2rem auto; cursor: default; height: 350px; flex-direction: column; justify-content: center; align-items: center;">
                 <ion-icon name="search-outline" style="font-size: 4rem; color: var(--text-secondary); margin-bottom: 1rem; opacity: 0.5;"></ion-icon>
-                <h3 style="margin-bottom: 0.5rem; color: var(--text-primary); padding: 0 1rem;">No teachers found</h3>
+                <h3 style="margin-bottom: 0.5rem; color: var(--text-primary); padding: 0 1rem;">Oops!</h3>
+                <p style="color: var(--text-secondary); padding: 0 1rem;">No teachers found matching your search.</p>
             </div>
             
             <div class="load-more-container" style="text-align: center; margin-top: 2rem;">
@@ -152,7 +152,22 @@
                         </div>
                         <div class="form-group">
                             <label for="teacher-image">Image URL (Google Drive link or any direct link)</label>
+                            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: -0.2rem; margin-bottom: 0.5rem;">Note: For best results, use an image with the face positioned towards the top. Images are automatically cropped at the bottom to fit.</p>
                             <input type="url" id="teacher-image" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher-image-pos">Vertical Image Adjustment (Top to Bottom)</label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="font-size: 0.8rem; color: var(--text-secondary);">Top</span>
+                                <input type="range" id="teacher-image-pos" min="0" max="100" value="0" style="flex: 1;">
+                                <span style="font-size: 0.8rem; color: var(--text-secondary);">Bottom</span>
+                            </div>
+                            <div id="teacher-image-preview-container" style="display: none; margin-top: 1rem; text-align: center;">
+                                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Preview (How it looks on the card):</p>
+                                <div style="width: 150px; height: 200px; margin: 0 auto; border-radius: 12px; overflow: hidden; background-color: var(--bg-secondary); border: 2px solid var(--border-color); position: relative;">
+                                    <div id="teacher-image-preview" style="width: 100%; height: 100%; background-size: cover; background-position: center 0%;"></div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -205,10 +220,31 @@
             document.getElementById('teacher-modal-title').textContent = 'Add New Teacher';
             teacherBtn.textContent = 'Save Teacher';
             document.getElementById('teacher-form').reset();
+            document.getElementById('teacher-image-preview-container').style.display = 'none';
 
             modal.classList.add('active');
             document.getElementById('teacher-msg').style.display = 'none';
         };
+
+        const imageInput = document.getElementById('teacher-image');
+        const posInput = document.getElementById('teacher-image-pos');
+        const previewContainer = document.getElementById('teacher-image-preview-container');
+        const preview = document.getElementById('teacher-image-preview');
+
+        function updatePreview() {
+            const url = imageInput.value.trim();
+            const pos = posInput.value;
+            if (url) {
+                previewContainer.style.display = 'block';
+                preview.style.backgroundImage = \`url('\${formatImageUrl(url)}')\`;
+                preview.style.backgroundPosition = \`center \${pos}%\`;
+            } else {
+                previewContainer.style.display = 'none';
+            }
+        }
+
+        imageInput.addEventListener('input', updatePreview);
+        posInput.addEventListener('input', updatePreview);
 
         const iName = document.getElementById('teacher-name');
         const iDesc = document.getElementById('teacher-desc');
@@ -250,7 +286,8 @@
                     description: iDesc.value,
                     dob: dobVal,
                     birthMonth: birthMonth,
-                    image: imageUrl
+                    image: imageUrl,
+                    imagePos: parseInt(document.getElementById('teacher-image-pos').value) || 0
                 };
 
                 if (editingTeacherId) {
@@ -286,6 +323,7 @@
                 document.getElementById('teacher-desc').value = data.description || '';
                 document.getElementById('teacher-dob').value = data.dob || '';
                 document.getElementById('teacher-image').value = data.image || '';
+                document.getElementById('teacher-image-pos').value = data.imagePos || 0;
                 
                 // Trigger live preview
                 iName.dispatchEvent(new Event('input'));
@@ -379,8 +417,24 @@
                 `;
             }
 
+            const skeletons = document.getElementById('teachers-skeletons');
+            if (skeletons && skeletons.style.display !== 'none') {
+                setTimeout(() => {
+                    skeletons.style.opacity = '0';
+                    setTimeout(() => {
+                        if (skeletons) skeletons.style.display = 'none';
+                    }, 500);
+                }, 100);
+            }
+
             if (teachers.length === 0 && !window.isAdmin) {
                 document.getElementById('no-results').style.display = 'flex';
+                if (skeletons) {
+                    skeletons.style.opacity = '0';
+                    setTimeout(() => {
+                        if (skeletons) skeletons.style.display = 'none';
+                    }, 500);
+                }
                 return;
             } else {
                 document.getElementById('no-results').style.display = 'none';
@@ -399,33 +453,29 @@
 
                 card.innerHTML = `
                     <div class="profile-card-inner">
-                        <div class="profile-card-front">
-                            <div class="profile-top-box" style="background: ${bgColor};">
-                                <div class="profile-badge">Teacher</div>
-                                <div class="profile-image-wrapper">
-                                    <img src="${escapeHTML(data.image)}" alt="Profile" class="profile-image" onerror="this.src='assets/images/placeholder.jpg'" loading="lazy">
-                                </div>
-                                <div class="profile-top-content">
-                                    <h3 class="profile-name">${escapeHTML(data.name)}</h3>
-                                    <p class="profile-stream-text">${escapeHTML(data.description || '')}</p>
+                        <div class="profile-card-front" style="background-image: url('${escapeHTML(data.image || 'assets/images/placeholder.jpg')}'); background-position: center ${escapeHTML(data.imagePos || 0)}%;">
+                            <div class="card-overlay-bottom">
+                                <div class="profile-info-bottom" style="width: 100%; max-width: 100%;">
+                                    <h3 class="profile-name-bottom">${escapeHTML(data.name)}</h3>
+                                    <p class="profile-role-bottom">${escapeHTML(data.description || 'Teacher')}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="profile-card-back">
                             
                             ${window.isAdmin ? `
-                            <button onclick="event.stopPropagation(); editTeacher('${escapeHTML(data.id)}')" style="width: 70%; max-width: 160px; border-radius: 999px; background: #e0e7ff; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: flex-start; padding: 10px 10px 10px 24px; gap: 0.75rem; color: #4338ca; font-weight: 500; font-family: var(--font-body); border: none; cursor: pointer;">
-                                <ion-icon name="create-outline" style="font-size: 1.2rem;"></ion-icon> <span>Edit</span>
+                            <button class="card-back-btn btn-edit-new" onclick="event.stopPropagation(); editTeacher('${escapeHTML(data.id)}')">
+                                <ion-icon name="create-outline"></ion-icon> <span>Edit</span>
                             </button>
                             ` : ''}
 
-                            <button onclick="event.stopPropagation(); shareProfile('${escapeHTML(data.name)}', 'Teacher', '${escapeHTML(data.description)}')" style="width: 70%; max-width: 160px; border-radius: 999px; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: flex-start; padding: 10px 10px 10px 24px; gap: 0.75rem; background: #dcfce7; color: #15803d; font-weight: 500; font-family: var(--font-body); border: none; cursor: pointer;">
-                                <ion-icon name="share-social-outline" style="font-size: 1.2rem;"></ion-icon> <span>Share</span>
+                            <button class="card-back-btn btn-share-new" onclick="event.stopPropagation(); shareProfile('${escapeHTML(data.name)}', 'Teacher', '${escapeHTML(data.description)}')">
+                                <ion-icon name="share-social-outline"></ion-icon> <span>Share</span>
                             </button>
                             
                             ${window.isAdmin ? `
-                            <button onclick="event.stopPropagation(); deleteTeacher('${escapeHTML(data.id)}')" style="width: 70%; max-width: 160px; border-radius: 999px; background: #fee2e2; display: flex; align-items: center; justify-content: flex-start; padding: 10px 10px 10px 24px; gap: 0.75rem; color: #b91c1c; font-weight: 500; font-family: var(--font-body); border: none; cursor: pointer; transition: transform 0.2s;">
-                                <ion-icon name="trash-outline" style="font-size: 1.2rem;"></ion-icon> <span>Delete</span>
+                            <button class="card-back-btn btn-delete-new" onclick="event.stopPropagation(); deleteTeacher('${escapeHTML(data.id)}')">
+                                <ion-icon name="trash-outline"></ion-icon> <span>Delete</span>
                             </button>
                             ` : ''}
                         </div>
