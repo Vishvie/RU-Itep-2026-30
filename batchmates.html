@@ -21,7 +21,7 @@
     <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js">
     <link rel="modulepreload" href="assets/js/firebase-init.js">
     <link rel="modulepreload" href="assets/js/firebase-init.js">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
 </head>
 
 <body style="--nav-active-color: #7C6BFF;">
@@ -518,21 +518,28 @@
                     let file = null;
                     let canvasSuccess = false;
                     
-                    if (btn && typeof html2canvas !== 'undefined') {
+                    if (btn && typeof htmlToImage !== 'undefined') {
                         try {
                             const card = btn.closest('.profile-card');
                             const front = card.querySelector('.profile-card-front');
                             const btnText = btn.innerHTML;
                             btn.innerHTML = '<ion-icon name="hourglass-outline"></ion-icon> <span>Wait...</span>';
                             
-                            // html2canvas is much more reliable on iOS Safari than html-to-image
-                            const canvas = await html2canvas(front, { 
-                                scale: 2, 
+                            // Workaround for Safari/iOS white image issue: 
+                            // 1. Multiple calls
+                            // 2. Explicit dimensions
+                            // 3. Skip fonts (often blocks WebKit SVG rendering)
+                            const config = { 
+                                pixelRatio: 2, 
+                                cacheBust: true, 
                                 useCORS: true,
-                                allowTaint: false,
-                                backgroundColor: null
-                            });
-                            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                                skipFonts: true,
+                                width: front.offsetWidth,
+                                height: front.offsetHeight
+                            };
+                            await htmlToImage.toPng(front, config);
+                            const blob = await htmlToImage.toBlob(front, config);
+                            
                             file = new File([blob], 'profile.png', { type: 'image/png' });
                             canvasSuccess = true;
                             
