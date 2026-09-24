@@ -403,18 +403,34 @@
             return false;
         };
 
-        window.shareEvent = (title, date) => {
+        window.shareEvent = async (title, date) => {
             const formattedDate = new Date(date).toLocaleDateString('default', { month: 'short', day: 'numeric', year: 'numeric' });
+            const link = window.location.href;
             const text = `Check out the event "${title}" happening on ${formattedDate} at Ravenshaw ITEP!`;
+            
+            try { navigator.clipboard.writeText(link); } catch(e) {}
+
             if (navigator.share) {
-                navigator.share({
-                    title: 'Ravenshaw Event',
-                    text: text,
-                    url: window.location.href
-                }).catch(console.error);
+                try {
+                    const response = await fetch('assets/images/Ravenshaw_University_Logo.png');
+                    const blob = await response.blob();
+                    const file = new File([blob], 'logo.png', { type: blob.type });
+                    
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            title: 'Ravenshaw Event',
+                            text: text,
+                            url: link,
+                            files: [file]
+                        });
+                    } else {
+                        await navigator.share({ title: 'Ravenshaw Event', text: text, url: link });
+                    }
+                } catch (err) {
+                    if (err.name !== 'AbortError') alert("Link copied to clipboard! You can paste it in your Instagram Story link sticker.");
+                }
             } else {
-                navigator.clipboard.writeText(text + " " + window.location.href);
-                alert("Event info copied to clipboard!");
+                alert("Link copied to clipboard! You can paste it in your Instagram Story link sticker.");
             }
         };
 

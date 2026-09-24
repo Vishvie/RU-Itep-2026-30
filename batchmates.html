@@ -504,17 +504,33 @@
             }
         };
 
-        window.shareProfile = (name, stream, subject) => {
+        window.shareProfile = async (name, stream, subject) => {
+            const link = window.location.href;
             const text = `Check out ${name}'s profile from ${stream} ${subject && subject !== 'undefined' ? '- ' + subject : ''} at Ravenshaw ITEP!`;
+            
+            try { navigator.clipboard.writeText(link); } catch(e) {}
+
             if (navigator.share) {
-                navigator.share({
-                    title: 'Ravenshaw Batchmate',
-                    text: text,
-                    url: window.location.href
-                }).catch(console.error);
+                try {
+                    const response = await fetch('assets/images/Ravenshaw_University_Logo.png');
+                    const blob = await response.blob();
+                    const file = new File([blob], 'logo.png', { type: blob.type });
+                    
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            title: 'Ravenshaw Batchmate',
+                            text: text,
+                            url: link,
+                            files: [file]
+                        });
+                    } else {
+                        await navigator.share({ title: 'Ravenshaw Batchmate', text: text, url: link });
+                    }
+                } catch (err) {
+                    if (err.name !== 'AbortError') alert("Link copied to clipboard! You can paste it in your Instagram Story link sticker.");
+                }
             } else {
-                navigator.clipboard.writeText(text + " " + window.location.href);
-                alert("Profile info copied to clipboard!");
+                alert("Link copied to clipboard! You can paste it in your Instagram Story link sticker.");
             }
         };
 
