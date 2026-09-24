@@ -324,9 +324,13 @@
         // Convert Google Drive view links to direct image links
         function formatImageUrl(url) {
             if (url.includes('drive.google.com')) {
-                const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                let match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
                 if (match && match[1]) {
-                    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                    return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
+                }
+                match = url.match(/id=([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`;
                 }
             }
             return url;
@@ -652,7 +656,7 @@
                     
                     const data = await response.json();
                     if (data.files && data.files.length > 0) {
-                        urlsToAdd = data.files.map(file => `https://drive.google.com/uc?export=view&id=${file.id}`);
+                        urlsToAdd = data.files.map(file => `https://drive.google.com/thumbnail?id=${file.id}&sz=w1000`);
                         msg.textContent = `Found ${urlsToAdd.length} media files. Adding...`;
                         msg.style.color = 'var(--text-secondary)';
                         msg.style.display = 'block';
