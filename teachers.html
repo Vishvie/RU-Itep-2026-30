@@ -368,6 +368,24 @@
                             const btnText = btn.innerHTML;
                             btn.innerHTML = '<ion-icon name="hourglass-outline"></ion-icon> <span>Wait...</span>';
                             
+                            // iOS Safari Fix: convert background image to base64 to prevent SVG security blocks
+                            const originalBg = front.style.backgroundImage;
+                            const bgMatch = originalBg.match(/url\(['"]?(.*?)['"]?\)/);
+                            if (bgMatch && bgMatch[1] && !bgMatch[1].startsWith('data:')) {
+                                try {
+                                    const res = await fetch(bgMatch[1], { mode: 'cors', cache: 'force-cache' });
+                                    const b = await res.blob();
+                                    const base64Url = await new Promise(r => {
+                                        const reader = new FileReader();
+                                        reader.onloadend = () => r(reader.result);
+                                        reader.readAsDataURL(b);
+                                    });
+                                    front.style.backgroundImage = `url(${base64Url})`;
+                                } catch (e) {
+                                    console.warn("Base64 conversion failed", e);
+                                }
+                            }
+                            
                             // Workaround for Safari/iOS white image issue: 
                             // 1. Multiple calls
                             // 2. Explicit dimensions
@@ -382,6 +400,9 @@
                             };
                             await htmlToImage.toPng(front, config);
                             const blob = await htmlToImage.toBlob(front, config);
+                            
+                            // Restore original background
+                            front.style.backgroundImage = originalBg;
                             
                             file = new File([blob], 'profile.png', { type: 'image/png' });
                             canvasSuccess = true;
