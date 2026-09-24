@@ -302,7 +302,7 @@
     <script type="module" src="assets/js/auth.js"></script>
 
     <script type="module">
-        import { db, auth, onAuthStateChanged, collection, getDocs, orderBy, query, limit, startAfter, where, addDoc, doc, deleteDoc, updateDoc, escapeHTML } from './assets/js/firebase-init.js';
+        import { db, auth, onAuthStateChanged, collection, getDocs, orderBy, query, limit, startAfter, where, addDoc, doc, deleteDoc, updateDoc, escapeHTML, getCountFromServer } from './assets/js/firebase-init.js';
 
         let editingStudentId = null;
         let lastVisibleStudent = null;
@@ -446,6 +446,7 @@
                 studentForm.reset();
                 setTimeout(() => modal.classList.remove('active'), 1000);
                 fetchStudents();
+                updateStreamCounts();
             } catch (error) {
                 alert("Error adding document: " + error.message);
             } finally {
@@ -499,6 +500,7 @@
                 try {
                     await deleteDoc(doc(db, "students", id));
                     fetchStudents();
+                    updateStreamCounts();
                 } catch (e) {
                     alert("Error deleting: " + e.message);
                 }
@@ -806,7 +808,32 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => fetchStudents(false));
+        async function updateStreamCounts() {
+            try {
+                const coll = collection(db, "students");
+                
+                const allSnapshot = await getCountFromServer(coll);
+                const countAllEl = document.getElementById('count-all');
+                if (countAllEl) countAllEl.textContent = allSnapshot.data().count;
+
+                const qBa = query(coll, where("stream", "==", "B.A B.Ed"));
+                const baSnapshot = await getCountFromServer(qBa);
+                const countBaEl = document.getElementById('count-ba');
+                if (countBaEl) countBaEl.textContent = baSnapshot.data().count;
+
+                const qBsc = query(coll, where("stream", "==", "B.Sc B.Ed"));
+                const bscSnapshot = await getCountFromServer(qBsc);
+                const countBscEl = document.getElementById('count-bsc');
+                if (countBscEl) countBscEl.textContent = bscSnapshot.data().count;
+            } catch (e) {
+                console.error("Error fetching stream counts:", e);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchStudents(false);
+            updateStreamCounts();
+        });
     </script>
 
     <script>

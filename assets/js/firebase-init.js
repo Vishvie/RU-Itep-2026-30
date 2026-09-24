@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, getDoc, orderBy, query, doc, deleteDoc, updateDoc, enableIndexedDbPersistence, arrayUnion, limit, startAfter, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, getDoc, orderBy, query, doc, deleteDoc, updateDoc, enableIndexedDbPersistence, arrayUnion, limit, startAfter, where, getCountFromServer } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCET2TwwlGUaKNIRMT-MP4jBasgIOeZ7C8",
@@ -35,4 +35,4 @@ const escapeHTML = (str) => {
     );
 };
 
-export { auth, db, onAuthStateChanged, signInWithEmailAndPassword, signOut, collection, addDoc, getDocs, getDoc, orderBy, query, doc, deleteDoc, updateDoc, arrayUnion, escapeHTML, limit, startAfter, where };
+export { auth, db, onAuthStateChanged, signInWithEmailAndPassword, signOut, collection, addDoc, getDocs, getDoc, orderBy, query, doc, deleteDoc, updateDoc, arrayUnion, escapeHTML, limit, startAfter, where, getCountFromServer };
