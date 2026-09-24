@@ -616,12 +616,8 @@
                 
                 if (isDriveFolder) {
                     const folderId = folderMatch[1];
-                    // REPLACE THIS WITH YOUR ACTUAL GOOGLE DRIVE API KEY
-                    const GOOGLE_DRIVE_API_KEY = "YOUR_API_KEY_HERE"; 
-                    
-                    if (GOOGLE_DRIVE_API_KEY === "YOUR_API_KEY_HERE") {
-                        throw new Error("Please add your Google Drive API key in the code (events.html) to fetch folder contents.");
-                    }
+                    // GOOGLE DRIVE API KEY
+                    const GOOGLE_DRIVE_API_KEY = "AIzaSyAi3rkiQGLJ-PU5s0UXZJe0BGdiwfMM758";
                     
                     btn.textContent = 'Extracting Files...';
                     const apiUrl = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents+and+(mimeType+contains+'image/'+or+mimeType+contains+'video/')&key=${GOOGLE_DRIVE_API_KEY}&fields=files(id)`;
