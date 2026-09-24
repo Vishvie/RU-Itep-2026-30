@@ -525,7 +525,9 @@
                             const btnText = btn.innerHTML;
                             btn.innerHTML = '<ion-icon name="hourglass-outline"></ion-icon> <span>Wait...</span>';
                             
-                            const blob = await htmlToImage.toBlob(front, { pixelRatio: 2 });
+                            // Workaround for Safari/iOS: first call often renders blank
+                            await htmlToImage.toPng(front, { cacheBust: true, useCORS: true });
+                            const blob = await htmlToImage.toBlob(front, { pixelRatio: 2, cacheBust: true, useCORS: true });
                             file = new File([blob], 'profile.png', { type: 'image/png' });
                             canvasSuccess = true;
                             
@@ -542,6 +544,19 @@
                     }
                     
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        // Show non-blocking toast so user knows to paste link
+                        const toast = document.createElement('div');
+                        toast.textContent = "Link copied! Paste it as a sticker in Instagram Story.";
+                        toast.style.cssText = "position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.8);color:#fff;padding:12px 24px;border-radius:24px;z-index:9999;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.3);animation: fadeInOut 4s forwards;";
+                        if (!document.querySelector('#toast-style')) {
+                            const style = document.createElement('style');
+                            style.id = 'toast-style';
+                            style.textContent = "@keyframes fadeInOut { 0% { opacity: 0; bottom: 10px; } 10% { opacity: 1; bottom: 20px; } 90% { opacity: 1; bottom: 20px; } 100% { opacity: 0; bottom: 10px; } }";
+                            document.head.appendChild(style);
+                        }
+                        document.body.appendChild(toast);
+                        setTimeout(() => toast.remove(), 4000);
+
                         await navigator.share({
                             title: 'Ravenshaw Batchmate',
                             text: text,
