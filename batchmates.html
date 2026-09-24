@@ -21,6 +21,7 @@
     <link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js">
     <link rel="modulepreload" href="assets/js/firebase-init.js">
     <link rel="modulepreload" href="assets/js/firebase-init.js">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body style="--nav-active-color: #7C6BFF;">
@@ -504,7 +505,7 @@
             }
         };
 
-        window.shareProfile = async (name, stream, subject) => {
+        window.shareProfile = async (name, stream, subject, btn) => {
             const link = window.location.href;
             const text = `Check out ${name}'s profile from ${stream} ${subject && subject !== 'undefined' ? '- ' + subject : ''} at Ravenshaw ITEP!`;
             
@@ -512,9 +513,32 @@
 
             if (navigator.share) {
                 try {
-                    const response = await fetch('assets/images/Ravenshaw_University_Logo.png');
-                    const blob = await response.blob();
-                    const file = new File([blob], 'logo.png', { type: blob.type });
+                    let file = null;
+                    let canvasSuccess = false;
+                    
+                    if (btn && typeof html2canvas !== 'undefined') {
+                        try {
+                            const card = btn.closest('.profile-card');
+                            const front = card.querySelector('.profile-card-front');
+                            const btnText = btn.innerHTML;
+                            btn.innerHTML = '<ion-icon name="hourglass-outline"></ion-icon> <span>Wait...</span>';
+                            
+                            const canvas = await html2canvas(front, { useCORS: true, scale: 2, backgroundColor: null });
+                            const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+                            file = new File([blob], 'profile.png', { type: 'image/png' });
+                            canvasSuccess = true;
+                            
+                            btn.innerHTML = btnText;
+                        } catch (e) {
+                            console.error("Canvas capture failed", e);
+                        }
+                    }
+                    
+                    if (!canvasSuccess) {
+                        const response = await fetch('assets/images/Ravenshaw_University_Logo.png');
+                        const blob = await response.blob();
+                        file = new File([blob], 'logo.png', { type: blob.type });
+                    }
                     
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
                         await navigator.share({
@@ -666,7 +690,7 @@
                             </button>
                             ` : ''}
 
-                            <button class="card-back-btn btn-share-new" onclick="event.stopPropagation(); shareProfile('${escapeHTML(data.name)}', '${escapeHTML(data.stream)}', '${escapeHTML(data.subject)}')">
+                            <button class="card-back-btn btn-share-new" onclick="event.stopPropagation(); shareProfile('${escapeHTML(data.name)}', '${escapeHTML(data.stream)}', '${escapeHTML(data.subject)}', this)">
                                 <ion-icon name="share-social-outline"></ion-icon> <span>Share</span>
                             </button>
                             
