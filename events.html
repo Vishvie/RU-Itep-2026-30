@@ -608,9 +608,45 @@
             msg.style.display = 'none';
             
             try {
+                let urlsToAdd = [url];
+                
+                // Check if it's a Google Drive folder
+                const folderMatch = url.match(/\/folders\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+                const isDriveFolder = url.includes('drive.google.com') && folderMatch && (url.includes('folders') || url.includes('folderview'));
+                
+                if (isDriveFolder) {
+                    const folderId = folderMatch[1];
+                    // REPLACE THIS WITH YOUR ACTUAL GOOGLE DRIVE API KEY
+                    const GOOGLE_DRIVE_API_KEY = "YOUR_API_KEY_HERE"; 
+                    
+                    if (GOOGLE_DRIVE_API_KEY === "YOUR_API_KEY_HERE") {
+                        throw new Error("Please add your Google Drive API key in the code (events.html) to fetch folder contents.");
+                    }
+                    
+                    btn.textContent = 'Extracting Files...';
+                    const apiUrl = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents+and+(mimeType+contains+'image/'+or+mimeType+contains+'video/')&key=${GOOGLE_DRIVE_API_KEY}&fields=files(id)`;
+                    
+                    const response = await fetch(apiUrl);
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error('Drive API Error:', errorData);
+                        throw new Error("Failed to fetch folder. Make sure the folder is public and your API key is valid.");
+                    }
+                    
+                    const data = await response.json();
+                    if (data.files && data.files.length > 0) {
+                        urlsToAdd = data.files.map(file => `https://drive.google.com/uc?export=view&id=${file.id}`);
+                        msg.textContent = `Found ${urlsToAdd.length} media files. Adding...`;
+                        msg.style.color = 'var(--text-secondary)';
+                        msg.style.display = 'block';
+                    } else {
+                        throw new Error("No images or videos found in the folder.");
+                    }
+                }
+                
                 const eventRef = doc(db, "events", currentEventId);
                 await updateDoc(eventRef, {
-                    mediaLinks: arrayUnion(url)
+                    mediaLinks: arrayUnion(...urlsToAdd)
                 });
                 
                 // Update local state
@@ -619,7 +655,7 @@
                     if (!allEventsList[eventIndex].mediaLinks) {
                         allEventsList[eventIndex].mediaLinks = [];
                     }
-                    allEventsList[eventIndex].mediaLinks.push(url);
+                    allEventsList[eventIndex].mediaLinks.push(...urlsToAdd);
                     renderMediaGrid(allEventsList[eventIndex].mediaLinks);
                 }
                 
